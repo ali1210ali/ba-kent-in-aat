@@ -13,11 +13,6 @@
       padding: 0;
       background: linear-gradient(135deg, #ffeb3b, #f44336);
       color: #333;
-      display: flex; /* Flexbox kullanarak ortalama */
-      flex-direction: column; /* Dikey yönde hizalama */
-      align-items: center; /* Yatayda ortalama */
-      justify-content: center; /* Dikeyde ortalama */
-      min-height: 100vh; /* Tüm ekran yüksekliğini kaplama */
     }
     a {
       text-decoration: none;
@@ -54,9 +49,9 @@
       width: 100%;
       height: 100vh;
       overflow: hidden;
-      margin: 20px;
-      border-radius: 15px;
-      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+      margin: 0;
+      border-radius: 0;
+      box-shadow: none;
       background-image: url('background.jpg');
       background-size: cover;
       background-position: center;
@@ -64,12 +59,12 @@
     }
     .slides {
       display: flex;
-      width: 500%;
+      width: 100%;
       height: 100%;
-      animation: slide 20s infinite;
+      transition: transform 0.5s ease;
     }
     .slide {
-      width: 100%;
+      min-width: 100%;
       height: 100%;
       background-size: cover;
       background-position: center;
@@ -80,38 +75,44 @@
     .slide4 { background-image: url('insaat4.jpg'); }
     .slide5 { background-image: url('insaat5.jpg'); }
     .slide6 { background-image: url('insaat6.jpg'); }
-    @keyframes slide {
-      0%, 20% { transform: translateX(0); }
-      25%, 40% { transform: translateX(-100%); }
-      45%, 60% { transform: translateX(-200%); }
-      65%, 80% { transform: translateX(-300%); }
-      85%, 100% { transform: translateX(-400%); }
-    }
     .slider-content {
       position: absolute;
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
-      text-align: left;
+      text-align: center;
       color: #fff;
-      background: rgba(0, 0, 0, 0.6);
+      background: rgba(0, 0, 0, 0.5);
       padding: 20px;
       border-radius: 10px;
       animation: fadeIn 3s;
+      width: 80%;
     }
     .slider-content h1 {
-      font-size: 3rem;
+      color: #fff;
+      font-size: 2rem;
       margin-bottom: 10px;
-      animation: fadeIn 2s ease-in-out;
+    }
+    .slider-content h2 {
+      color: #fff;
+      font-size: 1.5rem;
+      margin-bottom: 10px;
     }
     .slider-content p {
-      font-size: 1.2rem;
-      max-width: 800px;
+      color: #fff;
+      font-size: 0.9rem;
       line-height: 1.6;
     }
     .slider-content .address {
-      font-size: 1.1rem;
+      color: #fff;
+      font-size: 0.9rem;
       margin-top: 20px;
+    }
+    .slider-content img {
+      width: 100%;
+      height: auto;
+      border-radius: 10px;
+      margin-bottom: 10px;
     }
     /* AI Asistan */
     .ai-assistant {
@@ -240,7 +241,7 @@
     /* WhatsApp Butonu */
     .whatsapp-button {
       position: fixed;
-      bottom: 80px;
+      bottom: 20px;
       right: 20px;
       background: #25d366;
       color: #fff;
@@ -380,20 +381,17 @@
       <div class="slide slide6"></div>
     </div>
     <div class="slider-content">
-      <h1 style="font-size: 3rem; margin-bottom: 10px;">Başkent İnşaat</h1>
+      <img src="slide2.jpg" alt="Başkent İnşaat" />
+      <h1>Başkent İnşaat</h1>
+      <h2>Kalite ve Güvenin Adresi</h2>
       <p class="duz-yazi">
-        Başkent İnşaat, inşaat sektöründe kalite ve güvenin adresi. Beton pirket, tuğla, kiremit, alçıpan ve daha birçok yapı malzemesi ile her türlü inşaat projesine çözüm sunuyoruz. Malzemelerimiz, dayanıklılık ve estetiği bir araya getirerek uzun ömürlü yapılar inşa etmenizi sağlar.
+        Başkent İnşaat, inşaat sektöründe kalite ve güvenin adresi. Bims pirket, tuğla, kiremit, alçıpan ve daha birçok yapı malzemesi ile her türlü inşaat projesine çözüm sunuyoruz.
       </p>
       <div class="address">
         Adres: Bahçeşehir Mahallesi, Hasanköy Caddesi, No: 231
       </div>
     </div>
   </section>
-
-  <!-- AI Asistan -->
-  <div class="ai-assistant">
-    <button onclick="openAI()">AI Asistan</button>
-  </div>
 
   <!-- WhatsApp Butonu -->
   <a href="https://wa.me/905466619657" class="whatsapp-button" target="_blank">
@@ -511,6 +509,10 @@
       <textarea placeholder="Mesajınız" rows="5" required></textarea>
       <button type="submit">Gönder</button>
     </form>
+    <!-- WhatsApp Butonu -->
+    <a href="https://wa.me/905466619657" class="whatsapp-button" target="_blank">
+      <i class="fab fa-whatsapp"></i> WhatsApp
+    </a>
   </section>
 
   <!-- Modal HTML -->
@@ -533,25 +535,28 @@
     }
 
     // Fotoğrafların değişimi için gerekli kod
-    let currentCylinder = 0;
-    const cylinders = document.querySelectorAll('.cylinder');
-    const totalCylinders = cylinders.length;
+    let currentSlide = 0; // Mevcut slayt
+    const slides = document.querySelectorAll('.slide'); // Tüm slaytları seç
+    const totalSlides = slides.length; // Toplam slayt sayısı
 
-    function showCylinder(index) {
-      cylinders.forEach((cylinder, i) => {
-        cylinder.style.display = (i === index) ? 'block' : 'none';
-      });
+    function showSlide(index) {
+        // Slaytları gizle
+        slides.forEach((slide) => {
+            slide.style.display = 'none';
+        });
+        // Geçerli slaytı göster
+        slides[index].style.display = 'block';
     }
 
-    function nextCylinder() {
-      currentCylinder = (currentCylinder + 1) % totalCylinders;
-      showCylinder(currentCylinder);
+    function nextSlide() {
+        currentSlide = (currentSlide + 1) % totalSlides; // Sonraki slayta geç
+        showSlide(currentSlide); // Geçerli slaytı göster
     }
 
-    // İlk silindiri göster
-    showCylinder(currentCylinder);
-    // Her 5 saniyede bir silindiri değiştir
-    setInterval(nextCylinder, 5000);
+    // İlk slaytı göster
+    showSlide(currentSlide);
+    // Her 5 saniyede bir slaytı değiştir
+    setInterval(nextSlide, 5000);
 
     // Form validasyonu
     document.querySelector('.contact form').addEventListener('submit', function(event) {
