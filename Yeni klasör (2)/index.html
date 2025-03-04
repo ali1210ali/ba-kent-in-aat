@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Başkent İnşaat</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    /* Genel Stil */
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(135deg, #ffeb3b, #f44336);
+      color: #333;
+      display: flex; /* Flexbox kullanarak ortalama */
+      flex-direction: column; /* Dikey yönde hizalama */
+      align-items: center; /* Yatayda ortalama */
+      justify-content: center; /* Dikeyde ortalama */
+      min-height: 100vh; /* Tüm ekran yüksekliğini kaplama */
+    }
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+    /* Menü */
+    nav {
+      background: rgba(255, 255, 255, 0.9);
+      padding: 15px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+    nav ul {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      gap: 20px;
+    }
+    nav ul li {
+      font-size: 1.1rem;
+      font-weight: bold;
+      cursor: pointer;
+      transition: color 0.3s ease;
+    }
+    nav ul li:hover {
+      color: #f44336;
+    }
+    /* Ana Sayfa Slider */
+    .slider {
+      position: relative;
+      width: 100%;
+      height: 100vh;
+      overflow: hidden;
+      margin: 20px;
+      border-radius: 15px;
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+      background-image: url('background.jpg');
+      background-size: cover;
+      background-position: center;
+      z-index: 1;
+    }
+    .slides {
+      display: flex;
+      width: 500%;
+      height: 100%;
+      animation: slide 20s infinite;
+    }
+    .slide {
+      width: 100%;
+      height: 100%;
+      background-size: cover;
+      background-position: center;
+    }
+    .slide1 { background-image: url('insaat1.jpg'); }
+    .slide2 { background-image: url('insaat2.jpg'); }
+    .slide3 { background-image: url('insaat3.jpg'); }
+    .slide4 { background-image: url('insaat4.jpg'); }
+    .slide5 { background-image: url('insaat5.jpg'); }
+    .slide6 { background-image: url('insaat6.jpg'); }
+    @keyframes slide {
+      0%, 20% { transform: translateX(0); }
+      25%, 40% { transform: translateX(-100%); }
+      45%, 60% { transform: translateX(-200%); }
+      65%, 80% { transform: translateX(-300%); }
+      85%, 100% { transform: translateX(-400%); }
+    }
+    .slider-content {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      text-align: left;
+      color: #fff;
+      background: rgba(0, 0, 0, 0.6);
+      padding: 20px;
+      border-radius: 10px;
+      animation: fadeIn 3s;
+    }
+    .slider-content h1 {
+      font-size: 3rem;
+      margin-bottom: 10px;
+      animation: fadeIn 2s ease-in-out;
+    }
+    .slider-content p {
+      font-size: 1.2rem;
+      max-width: 800px;
+      line-height: 1.6;
+    }
+    .slider-content .address {
+      font-size: 1.1rem;
+      margin-top: 20px;
+    }
+    /* AI Asistan */
+    .ai-assistant {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: #fff;
+      padding: 15px;
+      border-radius: 10px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+      animation: slideIn 1s ease-in-out;
+    }
+    .ai-assistant button {
+      background: #f44336;
+      color: #fff;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 1rem;
+    }
+    .ai-assistant button:hover {
+      background: #e53935;
+    }
+    /* Ürünler */
+    .products {
+      padding: 50px 20px;
+      background: rgba(255, 255, 255, 0.9);
+      margin: 20px;
+      border-radius: 15px;
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    }
+    .products h2 {
+      text-align: left;
+      font-size: 2.5rem;
+      color: #f44336;
+      margin-bottom: 30px;
+    }
+    .product-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+    }
+    .product-card {
+      background: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .product-card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    }
+    .product-card img {
+      width: 100%;
+      height: auto;
+      object-fit: cover;
+      border-radius: 10px;
+    }
+    .product-card h3 {
+      font-size: 1.5rem;
+      margin: 15px 0 10px;
+    }
+    .product-card p {
+      font-size: 1rem;
+      color: #666;
+    }
+    /* Hakkında */
+    .about {
+      padding: 50px 20px;
+      background: rgba(255, 255, 255, 0.9);
+      margin: 20px;
+      border-radius: 15px;
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    }
+    .about h2 {
+      text-align: center;
+      font-size: 2.5rem;
+      color: #f44336;
+      margin-bottom: 30px;
+    }
+    .about p {
+      font-size: 1.1rem;
+      line-height: 1.6;
+      text-align: justify;
+    }
+    /* İletişim */
+    .contact {
+      padding: 50px 20px;
+      background: rgba(255, 255, 255, 0.9);
+      margin: 20px;
+      border-radius: 15px;
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    }
+    .contact h2 {
+      text-align: center;
+      font-size: 2.5rem;
+      color: #f44336;
+      margin-bottom: 30px;
+    }
+    .contact form {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+    .contact input, .contact textarea {
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      font-size: 1rem;
+    }
+    .contact button {
+      padding: 10px 20px;
+      background: #f44336;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      font-size: 1.1rem;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+    .contact button:hover {
+      background: #e53935;
+    }
+    /* WhatsApp Butonu */
+    .whatsapp-button {
+      position: fixed;
+      bottom: 80px;
+      right: 20px;
+      background: #25d366;
+      color: #fff;
+      padding: 15px;
+      border-radius: 50%;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      text-decoration: none;
+      animation: slideIn 1s ease-in-out;
+      transition: background 0.3s ease;
+    }
+    .whatsapp-button:hover {
+      background: #128c7e;
+    }
+    .whatsapp-button i {
+      margin-right: 5px; /* İkon ile yazı arasında boşluk */
+    }
+    /* Animasyonlar */
+    @keyframes slideIn {
+      from { transform: translateY(-50px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+    @keyframes fadeIn {
+      0% { opacity: 0; }
+      100% { opacity: 1; }
+    }
+    .el-yazisi {
+      font-family: 'Dancing Script', cursive; /* El yazısı fontu */
+      font-size: 2.5rem; /* Yazı boyutu */
+    }
+    .duz-yazi {
+      font-family: Arial, sans-serif; /* Düz yazı fontu */
+      font-size: 2.5rem; /* Yazı boyutu */
+    }
+    @media (max-width: 768px) {
+        .slider-content {
+            padding: 10px; /* Küçük ekranlar için padding azaltma */
+        }
+        .slider-content h1 {
+            font-size: 2rem; /* Başlık boyutunu küçültme */
+        }
+    }
+    /* Modal */
+    .modal {
+      display: none; /* Varsayılan olarak gizli */
+      position: fixed;
+      z-index: 1;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background-color: rgb(0,0,0);
+      background-color: rgba(0,0,0,0.4);
+    }
+
+    .modal-content {
+      background-color: #fefefe;
+      margin: 15% auto;
+      padding: 20px;
+      border: 1px solid #888;
+      width: 80%;
+    }
+
+    .close {
+      color: #aaaaaa;
+      float: right;
+      font-size: 28px;
+      font-weight: bold;
+    }
+
+    .close:hover,
+    .close:focus {
+      color: #000;
+      text-decoration: none;
+      cursor: pointer;
+    }
+    .cylinder-container {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      animation: move 10s linear infinite;
+    }
+
+    .cylinder {
+      width: 150px; /* Genişliği artırdık */
+      height: auto;
+      transition: transform 0.5s ease; /* Büyüme animasyonu */
+    }
+
+    .cylinder:hover {
+      transform: scale(1.5); /* Hover sırasında daha fazla büyüme */
+    }
+
+    @keyframes rotate {
+      from { transform: rotateY(0deg); }
+      to { transform: rotateY(360deg); }
+    }
+
+    @keyframes move {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-100%); }
+    }
+
+    @keyframes shake {
+      0% { transform: translate(0); }
+      25% { transform: translate(-5px, 0); }
+      50% { transform: translate(5px, 0); }
+      75% { transform: translate(-5px, 0); }
+      100% { transform: translate(0); }
+    }
+  </style>
+</head>
+<body>
+  <!-- Menü -->
+  <nav>
+    <h1>Başkent İnşaat</h1>
+    <ul>
+      <li><a href="#home">Ana Sayfa</a></li>
+      <li><a href="#products">Ürünler</a></li>
+      <li><a href="#about">Hakkında</a></li>
+      <li><a href="#contact">İletişim</a></li>
+    </ul>
+  </nav>
+
+  <!-- Ana Sayfa Slider -->
+  <section id="home" class="slider">
+    <div class="slides">
+      <div class="slide slide1"></div>
+      <div class="slide slide2"></div>
+      <div class="slide slide3"></div>
+      <div class="slide slide4"></div>
+      <div class="slide slide5"></div>
+      <div class="slide slide6"></div>
+    </div>
+    <div class="slider-content">
+      <h1 style="font-size: 3rem; margin-bottom: 10px;">Başkent İnşaat</h1>
+      <p class="duz-yazi">
+        Başkent İnşaat, inşaat sektöründe kalite ve güvenin adresi. Beton pirket, tuğla, kiremit, alçıpan ve daha birçok yapı malzemesi ile her türlü inşaat projesine çözüm sunuyoruz. Malzemelerimiz, dayanıklılık ve estetiği bir araya getirerek uzun ömürlü yapılar inşa etmenizi sağlar.
+      </p>
+      <div class="address">
+        Adres: Bahçeşehir Mahallesi, Hasanköy Caddesi, No: 231
+      </div>
+    </div>
+  </section>
+
+  <!-- AI Asistan -->
+  <div class="ai-assistant">
+    <button onclick="openAI()">AI Asistan</button>
+  </div>
+
+  <!-- WhatsApp Butonu -->
+  <a href="https://wa.me/905466619657" class="whatsapp-button" target="_blank">
+    <i class="fab fa-whatsapp"></i> WhatsApp
+  </a>
+
+  <!-- Ürünler -->
+  <section id="products" class="products">
+    <h2 style="text-align: left;">Ürünlerimiz</h2>
+    <div class="product-grid">
+        <!-- Beton Pirket -->
+        <div class="product-card">
+            <img src="unnamed.png" alt="Beton Pirket">
+            <h3>Beton Pirket</h3>
+            <p>Beton pirket, inşaatlarda temel ve duvar yapımında kullanılan dayanıklı bir malzemedir.</p>
+        </div>
+        <!-- Pirket -->
+        <div class="product-card">
+            <img src="pirket2.jpg" alt="Pirket">
+            <h3>Pirket</h3>
+            <p>Pirket, çeşitli inşaat projelerinde kullanılan çok yönlü bir malzemedir.</p>
+        </div>
+        <!-- Sıva Alçısı -->
+        <div class="product-card">
+            <img src="sivatek.png" alt="Sıva Alçısı">
+            <h3>Sıva Alçısı</h3>
+            <p>Sıva alçısı, duvarların düzgün ve pürüzsüz bir yüzeye kavuşmasını sağlar.</p>
+        </div>
+        <!-- Saten Alçısı -->
+        <div class="product-card">
+            <img src="saten.png" alt="Saten Alçısı">
+            <h3>Saten Alçısı</h3>
+            <p>Saten alçısı, duvarlara son kat olarak uygulanır ve pürüzsüz bir yüzey sağlar.</p>
+        </div>
+        <!-- Kartonpiyer -->
+        <div class="product-card">
+            <img src="kartek.png" alt="Kartonpiyer">
+            <h3>Kartonpiyer</h3>
+            <p>Kartonpiyer, tavan ve duvar birleşimlerinde estetik bir görünüm sağlar.</p>
+        </div>
+        <!-- Kaba Sıva Kumu -->
+        <div class="product-card">
+            <img src="kaba-siva-kumu.jpg" alt="Kaba Sıva Kumu">
+            <h3>Kaba Sıva Kumu</h3>
+            <p>Kaba sıva kumu, duvarların ilk katmanında kullanılan bir malzemedir.</p>
+        </div>
+        <!-- Yıkanmış Kum -->
+        <div class="product-card">
+            <img src="yikanmis-kum.jpg" alt="Yıkanmış Kum">
+            <h3>Yıkanmış Kum</h3>
+            <p>Yıkanmış kum, ince işlerde ve beton yapımında kullanılır.</p>
+        </div>
+        <!-- Beton Kumu -->
+        <div class="product-card">
+            <img src="beton-kumu.jpg" alt="Beton Kumu">
+            <h3>Beton Kumu</h3>
+            <p>Beton kumu, beton yapımında kullanılan temel bir malzemedir.</p>
+        </div>
+        <!-- Tuğla -->
+        <div class="product-card">
+            <img src="tuğla.jpg" alt="Tuğla">
+            <h3>Tuğla</h3>
+            <p>Tuğla, duvar yapımında kullanılan klasik ve dayanıklı bir malzemedir.</p>
+        </div>
+        <!-- Kiremit -->
+        <div class="product-card">
+            <img src="rk.jpg" alt="Kiremit">
+            <h3>Kiremit</h3>
+            <p>Kiremit, çatı kaplamalarında kullanılan estetik ve dayanıklı bir malzemedir.</p>
+        </div>
+        <!-- Alçıpan -->
+        <div class="product-card">
+            <img src="alcipan.jpg" alt="Alçıpan">
+            <h3>Alçıpan</h3>
+            <p>Alçıpan, duvar ve tavan kaplamalarında kullanılan hafif bir malzemedir.</p>
+        </div>
+        <!-- OSB -->
+        <div class="product-card">
+            <img src="osb-3.jpg" alt="OSB">
+            <h3>OSB</h3>
+            <p>OSB, yapı malzemesi olarak kullanılan dayanıklı bir ahşap üründür.</p>
+        </div>
+        <!-- Pleamut -->
+        <div class="product-card">
+            <img src="pleamut.jpg" alt="Pleamut">
+            <h3>Pleamut</h3>
+            <p>Pleamut, dekoratif amaçlı kullanılan bir ahşap malzemedir.</p>
+        </div>
+        <!-- Kalıp Tahtası -->
+        <div class="product-card">
+            <img src="ahsap15.jpg" alt="Kalıp Tahtası">
+            <h3>Kalıp Tahtası</h3>
+            <p>Kalıp tahtası, beton döküm işlerinde kullanılan bir malzemedir.</p>
+        </div>
+    </div>
+  </section>
+
+  <!-- Hakkında -->
+  <section id="about" class="about">
+    <h2>Hakkında</h2>
+    <p>
+      Başkent İnşaat, inşaat sektöründe uzun yıllara dayanan deneyimi ile kaliteli ve güvenilir hizmet sunmayı hedeflemektedir. Müşteri memnuniyetini ön planda tutarak, her projede en iyi malzemeleri kullanarak sağlam yapılar inşa ediyoruz. Ekibimiz, alanında uzman profesyonellerden oluşmakta olup, her türlü inşaat projesinde sizlere destek vermektedir.
+    </p>
+    <p>
+      Yenilikçi yaklaşımımız ve teknolojik altyapımız ile sektördeki gelişmeleri takip ederek, en güncel çözümleri sunmaktayız. Başkent İnşaat olarak, güvenli ve estetik yapılar inşa etmek için çalışıyoruz.
+    </p>
+  </section>
+
+  <!-- İletişim -->
+  <section id="contact" class="contact">
+    <h2>İletişim</h2>
+    <form>
+      <input type="text" placeholder="Adınız" required>
+      <input type="email" placeholder="E-posta" required>
+      <textarea placeholder="Mesajınız" rows="5" required></textarea>
+      <button type="submit">Gönder</button>
+    </form>
+  </section>
+
+  <!-- Modal HTML -->
+  <div id="myModal" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="closeModal()">&times;</span>
+      <p>Bu bir modal pencere!</p>
+    </div>
+  </div>
+
+  <script>
+    // AI Asistan
+    function openAI() {
+      const userInput = prompt("Merhaba! Size nasıl yardımcı olabilirim?");
+      if (userInput && !userInput.toLowerCase().includes("kötü")) {
+        alert("İş sektörüyle ilgili sorularınızı yanıtlamak için buradayım. Sorunuz: " + userInput);
+      } else {
+        alert("Üzgünüm, bu tür mesajlara cevap veremem.");
+      }
+    }
+
+    // Fotoğrafların değişimi için gerekli kod
+    let currentCylinder = 0;
+    const cylinders = document.querySelectorAll('.cylinder');
+    const totalCylinders = cylinders.length;
+
+    function showCylinder(index) {
+      cylinders.forEach((cylinder, i) => {
+        cylinder.style.display = (i === index) ? 'block' : 'none';
+      });
+    }
+
+    function nextCylinder() {
+      currentCylinder = (currentCylinder + 1) % totalCylinders;
+      showCylinder(currentCylinder);
+    }
+
+    // İlk silindiri göster
+    showCylinder(currentCylinder);
+    // Her 5 saniyede bir silindiri değiştir
+    setInterval(nextCylinder, 5000);
+
+    // Form validasyonu
+    document.querySelector('.contact form').addEventListener('submit', function(event) {
+        const name = document.querySelector('input[type="text"]').value;
+        const email = document.querySelector('input[type="email"]').value;
+
+        if (!name || !email) {
+            alert("Lütfen tüm alanları doldurun.");
+            event.preventDefault(); // Formun gönderilmesini engelle
+        }
+    });
+
+    function openModal() {
+      document.getElementById("myModal").style.display = "block";
+    }
+
+    function closeModal() {
+      document.getElementById("myModal").style.display = "none";
+    }
+  </script>
+</body>
+</html>
