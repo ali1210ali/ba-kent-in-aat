@@ -11,8 +11,8 @@
       font-family: Arial, sans-serif;
       margin: 0;
       padding: 0;
-      background: #000; /* Arka plan rengini siyah yaptık */
-      color: #333;
+      background: #fff; /* Arka plan beyaz yapıldı */
+      color: #333; /* Varsayılan yazı rengi */
     }
     a {
       text-decoration: none;
@@ -35,7 +35,7 @@
       gap: 20px;
     }
     nav ul li {
-      font-size: 1.1rem;
+      font-size: 0.9rem; /* Yazı boyutu küçültüldü */
       font-weight: bold;
       cursor: pointer;
       transition: color 0.3s ease;
@@ -47,95 +47,56 @@
     .slider {
       position: relative;
       width: 100%;
-      height: 100vh;
+      height: 400px; /* Slider yüksekliği */
       overflow: hidden;
       margin: 0;
       border-radius: 0;
       box-shadow: none;
-      background-image: url('background.jpg');
-      background-size: cover;
-      background-position: center;
+      background: #000; /* Arka plan siyah yapıldı */
       z-index: 1;
     }
-    .slides {
-      display: flex;
+    .slider-images {
+      position: relative;
       width: 100%;
       height: 100%;
-      transition: transform 0.5s ease;
     }
-    .slide {
-      min-width: 100%;
+    .slider-image {
+      position: absolute;
+      width: 100%;
       height: 100%;
-      background-size: cover;
-      background-position: center;
+      object-fit: cover;
+      opacity: 0;
+      transition: opacity 1s ease-in-out;
+      border-radius: 50%; /* Silindir efekti */
+      transform: scale(0.8); /* Başlangıçta küçült */
     }
-    .slide1 { background-image: url('insaat1.jpg'); }
-    .slide2 { background-image: url('insaat2.jpg'); }
-    .slide3 { background-image: url('insaat3.jpg'); }
-    .slide4 { background-image: url('insaat4.jpg'); }
-    .slide5 { background-image: url('insaat5.jpg'); }
-    .slide6 { background-image: url('insaat6.jpg'); }
+    .slider-image.active {
+      opacity: 1;
+      transform: scale(1); /* Aktifken normal boyut */
+    }
     .slider-content {
       position: absolute;
-      top: 50%;
+      top: 50%; /* Yazıları yukarıda konumlandırmak için ayarlandı */
       left: 50%;
       transform: translate(-50%, -50%);
-      text-align: center;
-      color: #fff;
-      background: rgba(0, 0, 0, 0.5);
-      padding: 20px;
-      border-radius: 10px;
-      animation: fadeIn 3s;
-      width: 80%;
+      text-align: center; /* Yazıları ortalamak için */
+      color: #fff; /* Yazı rengi beyaz yapıldı */
+      z-index: 2;
     }
     .slider-content h1 {
-      color: #fff;
-      font-size: 2rem;
+      font-size: 3rem; /* Başlık boyutu */
       margin-bottom: 10px;
+      font-weight: bold; /* Kalın yazı */
     }
     .slider-content h2 {
-      color: #fff;
-      font-size: 1.5rem;
-      margin-bottom: 10px;
+      font-size: 1.8rem; /* Alt başlık boyutu artırıldı */
+      margin-bottom: 20px;
+      font-weight: bold; /* Kalın yazı */
     }
     .slider-content p {
-      color: #fff;
-      font-size: 0.9rem;
-      line-height: 1.6;
-    }
-    .slider-content .address {
-      color: #fff;
-      font-size: 0.9rem;
-      margin-top: 20px;
-    }
-    .slider-content img {
-      width: 100%;
-      height: auto;
-      border-radius: 10px;
-      margin-bottom: 10px;
-    }
-    /* AI Asistan */
-    .ai-assistant {
-      position: fixed;
-      bottom: 20px;
-      right: 20px;
-      background: #fff;
-      padding: 15px;
-      border-radius: 10px;
-      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-      animation: slideIn 1s ease-in-out;
-    }
-    .ai-assistant button {
-      background: #f44336;
-      color: #fff;
-      border: none;
-      padding: 10px 20px;
-      border-radius: 5px;
-      cursor: pointer;
-      font-size: 1rem;
-    }
-    .ai-assistant button:hover {
-      background: #e53935;
+      font-size: 1.2rem; /* Paragraf boyutu artırıldı */
+      line-height: 1.6; /* Satır yüksekliği artırıldı */
+      font-weight: bold; /* Kalın yazı */
     }
     /* Ürünler */
     .products {
@@ -188,9 +149,9 @@
       margin: 20px;
       border-radius: 15px;
       box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+      text-align: center; /* Adresi ortalamak için */
     }
     .about h2 {
-      text-align: center;
       font-size: 2.5rem;
       color: #f44336;
       margin-bottom: 30px;
@@ -260,7 +221,7 @@
       background: #128c7e;
     }
     .whatsapp-button i {
-      margin-right: 5px; /* İkon ile yazı arasında boşluk */
+      margin-right: 5px;
     }
     /* Animasyonlar */
     @keyframes slideIn {
@@ -271,90 +232,13 @@
       0% { opacity: 0; }
       100% { opacity: 1; }
     }
-    .el-yazisi {
-      font-family: 'Dancing Script', cursive; /* El yazısı fontu */
-      font-size: 2.5rem; /* Yazı boyutu */
-    }
-    .duz-yazi {
-      font-family: Arial, sans-serif; /* Düz yazı fontu */
-      font-size: 2.5rem; /* Yazı boyutu */
-    }
     @media (max-width: 768px) {
-        .slider-content {
-            padding: 10px; /* Küçük ekranlar için padding azaltma */
-        }
         .slider-content h1 {
-            font-size: 2rem; /* Başlık boyutunu küçültme */
+            font-size: 2rem;
         }
-    }
-    /* Modal */
-    .modal {
-      display: none; /* Varsayılan olarak gizli */
-      position: fixed;
-      z-index: 1;
-      left: 0;
-      top: 0;
-      width: 100%;
-      height: 100%;
-      overflow: auto;
-      background-color: rgb(0,0,0);
-      background-color: rgba(0,0,0,0.4);
-    }
-
-    .modal-content {
-      background-color: #fefefe;
-      margin: 15% auto;
-      padding: 20px;
-      border: 1px solid #888;
-      width: 80%;
-    }
-
-    .close {
-      color: #aaaaaa;
-      float: right;
-      font-size: 28px;
-      font-weight: bold;
-    }
-
-    .close:hover,
-    .close:focus {
-      color: #000;
-      text-decoration: none;
-      cursor: pointer;
-    }
-    .cylinder-container {
-      display: flex;
-      justify-content: center;
-      gap: 20px;
-      animation: move 10s linear infinite;
-    }
-
-    .cylinder {
-      width: 150px; /* Genişliği artırdık */
-      height: auto;
-      transition: transform 0.5s ease; /* Büyüme animasyonu */
-    }
-
-    .cylinder:hover {
-      transform: scale(1.5); /* Hover sırasında daha fazla büyüme */
-    }
-
-    @keyframes rotate {
-      from { transform: rotateY(0deg); }
-      to { transform: rotateY(360deg); }
-    }
-
-    @keyframes move {
-      0% { transform: translateX(0); }
-      100% { transform: translateX(-100%); }
-    }
-
-    @keyframes shake {
-      0% { transform: translate(0); }
-      25% { transform: translate(-5px, 0); }
-      50% { transform: translate(5px, 0); }
-      75% { transform: translate(-5px, 0); }
-      100% { transform: translate(0); }
+        .slider-content h2 {
+            font-size: 1.2rem;
+        }
     }
   </style>
 </head>
@@ -372,24 +256,25 @@
 
   <!-- Ana Sayfa Slider -->
   <section id="home" class="slider">
-    <div class="slides">
-      <div class="slide slide1"></div>
-      <div class="slide slide2"></div>
-      <div class="slide slide3"></div>
-      <div class="slide slide4"></div>
-      <div class="slide slide5"></div>
-      <div class="slide slide6"></div>
+    <div class="slider-images">
+      <!-- Slider Fotoğrafları -->
+      <img src="4.webp" alt="Slider 1" class="slider-image active">
+      <img src="2.webp" alt="Slider 2" class="slider-image">
+      <img src="3.webp" alt="Slider 3" class="slider-image">
+      <img src="1.webp" alt="Slider 4" class="slider-image">
+      <img src="image5.webp" alt="Slider 5" class="slider-image">
+      <img src="image6.webp" alt="Slider 6" class="slider-image">
+      <img src="image7.webp" alt="Slider 7" class="slider-image">
+      <img src="image8.webp" alt="Slider 8" class="slider-image">
+      <img src="image9.webp" alt="Slider 9" class="slider-image">
+      <img src="image10.webp" alt="Slider 10" class="slider-image">
     </div>
     <div class="slider-content">
-      <img src="slide2.jpg" alt="Başkent İnşaat" />
       <h1>Başkent İnşaat</h1>
       <h2>Kalite ve Güvenin Adresi</h2>
       <p class="duz-yazi">
         Başkent İnşaat, inşaat sektöründe kalite ve güvenin adresi. Bims pirket, tuğla, kiremit, alçıpan ve daha birçok yapı malzemesi ile her türlü inşaat projesine çözüm sunuyoruz.
       </p>
-      <div class="address">
-        Adres: Bahçeşehir Mahallesi, Hasanköy Caddesi, No: 231
-      </div>
     </div>
   </section>
 
@@ -402,90 +287,96 @@
   <section id="products" class="products">
     <h2 style="text-align: left;">Ürünlerimiz</h2>
     <div class="product-grid">
-        <!-- Beton Pirket -->
-        <div class="product-card">
-            <img src="unnamed.png" alt="Beton Pirket">
-            <h3>Beton Pirket</h3>
-            <p>Beton pirket, inşaatlarda temel ve duvar yapımında kullanılan dayanıklı bir malzemedir.</p>
-        </div>
-        <!-- Pirket -->
-        <div class="product-card">
-            <img src="pirket2.jpg" alt="Pirket">
-            <h3>Pirket</h3>
-            <p>Pirket, çeşitli inşaat projelerinde kullanılan çok yönlü bir malzemedir.</p>
-        </div>
-        <!-- Sıva Alçısı -->
-        <div class="product-card">
-            <img src="sivatek.png" alt="Sıva Alçısı">
-            <h3>Sıva Alçısı</h3>
-            <p>Sıva alçısı, duvarların düzgün ve pürüzsüz bir yüzeye kavuşmasını sağlar.</p>
-        </div>
-        <!-- Saten Alçısı -->
-        <div class="product-card">
-            <img src="saten.png" alt="Saten Alçısı">
-            <h3>Saten Alçısı</h3>
-            <p>Saten alçısı, duvarlara son kat olarak uygulanır ve pürüzsüz bir yüzey sağlar.</p>
-        </div>
-        <!-- Kartonpiyer -->
-        <div class="product-card">
-            <img src="kartek.png" alt="Kartonpiyer">
-            <h3>Kartonpiyer</h3>
-            <p>Kartonpiyer, tavan ve duvar birleşimlerinde estetik bir görünüm sağlar.</p>
-        </div>
-        <!-- Kaba Sıva Kumu -->
-        <div class="product-card">
-            <img src="kaba-siva-kumu.jpg" alt="Kaba Sıva Kumu">
-            <h3>Kaba Sıva Kumu</h3>
-            <p>Kaba sıva kumu, duvarların ilk katmanında kullanılan bir malzemedir.</p>
-        </div>
-        <!-- Yıkanmış Kum -->
-        <div class="product-card">
-            <img src="yikanmis-kum.jpg" alt="Yıkanmış Kum">
-            <h3>Yıkanmış Kum</h3>
-            <p>Yıkanmış kum, ince işlerde ve beton yapımında kullanılır.</p>
-        </div>
-        <!-- Beton Kumu -->
-        <div class="product-card">
-            <img src="beton-kumu.jpg" alt="Beton Kumu">
-            <h3>Beton Kumu</h3>
-            <p>Beton kumu, beton yapımında kullanılan temel bir malzemedir.</p>
-        </div>
-        <!-- Tuğla -->
-        <div class="product-card">
-            <img src="tuğla.jpg" alt="Tuğla">
-            <h3>Tuğla</h3>
-            <p>Tuğla, duvar yapımında kullanılan klasik ve dayanıklı bir malzemedir.</p>
-        </div>
-        <!-- Kiremit -->
-        <div class="product-card">
-            <img src="rk.jpg" alt="Kiremit">
-            <h3>Kiremit</h3>
-            <p>Kiremit, çatı kaplamalarında kullanılan estetik ve dayanıklı bir malzemedir.</p>
-        </div>
-        <!-- Alçıpan -->
-        <div class="product-card">
-            <img src="alcipan.jpg" alt="Alçıpan">
-            <h3>Alçıpan</h3>
-            <p>Alçıpan, duvar ve tavan kaplamalarında kullanılan hafif bir malzemedir.</p>
-        </div>
-        <!-- OSB -->
-        <div class="product-card">
-            <img src="osb-3.jpg" alt="OSB">
-            <h3>OSB</h3>
-            <p>OSB, yapı malzemesi olarak kullanılan dayanıklı bir ahşap üründür.</p>
-        </div>
-        <!-- Pleamut -->
-        <div class="product-card">
-            <img src="pleamut.jpg" alt="Pleamut">
-            <h3>Pleamut</h3>
-            <p>Pleamut, dekoratif amaçlı kullanılan bir ahşap malzemedir.</p>
-        </div>
-        <!-- Kalıp Tahtası -->
-        <div class="product-card">
-            <img src="ahsap15.jpg" alt="Kalıp Tahtası">
-            <h3>Kalıp Tahtası</h3>
-            <p>Kalıp tahtası, beton döküm işlerinde kullanılan bir malzemedir.</p>
-        </div>
+      <!-- Beton Pirket -->
+      <div class="product-card">
+        <img src="unnamed.png" alt="Beton Pirket">
+        <h3>Beton Pirket</h3>
+        <p>Beton pirket, inşaatlarda temel ve duvar yapımında kullanılan dayanıklı bir malzemedir.</p>
+      </div>
+      <!-- Bims Pirket -->
+      <div class="product-card">
+        <img src="pirket2.jpg" alt="Bims Pirket">
+        <h3>Bims Pirket</h3>
+        <p>Bims pirket, çeşitli inşaat projelerinde kullanılan çok yönlü bir malzemedir.</p>
+      </div>
+      <!-- Sıva Alçısı -->
+      <div class="product-card">
+        <img src="sivatek.png" alt="Sıva Alçısı">
+        <h3>Sıva Alçısı</h3>
+        <p>Sıva alçısı, duvarların düzgün ve pürüzsüz bir yüzeye kavuşmasını sağlar.</p>
+      </div>
+      <!-- Lento -->
+      <div class="product-card">
+        <img src="lento.jpg" alt="Lento">
+        <h3>Lento</h3>
+        <p>Lento, inşaat projelerinde kullanılan hafif ve dayanıklı bir malzemedir.</p>
+      </div>
+      <!-- Saten Alçısı -->
+      <div class="product-card">
+        <img src="saten.png" alt="Saten Alçısı">
+        <h3>Saten Alçısı</h3>
+        <p>Saten alçısı, duvarlara son kat olarak uygulanır ve pürüzsüz bir yüzey sağlar.</p>
+      </div>
+      <!-- Kartonpiyer -->
+      <div class="product-card">
+        <img src="kartek.png" alt="Kartonpiyer">
+        <h3>Kartonpiyer</h3>
+        <p>Kartonpiyer, tavan ve duvar birleşimlerinde estetik bir görünüm sağlar.</p>
+      </div>
+      <!-- Kaba Sıva Kumu -->
+      <div class="product-card">
+        <img src="kaba-siva-kumu.jpg" alt="Kaba Sıva Kumu">
+        <h3>Kaba Sıva Kumu</h3>
+        <p>Kaba sıva kumu, duvarların ilk katmanında kullanılan bir malzemedir.</p>
+      </div>
+      <!-- Yıkanmış Kum -->
+      <div class="product-card">
+        <img src="yikanmis-kum.jpg" alt="Yıkanmış Kum">
+        <h3>Yıkanmış Kum</h3>
+        <p>Yıkanmış kum, ince işlerde ve beton yapımında kullanılır.</p>
+      </div>
+      <!-- Beton Kumu -->
+      <div class="product-card">
+        <img src="beton-kumu.jpg" alt="Beton Kumu">
+        <h3>Beton Kumu</h3>
+        <p>Beton kumu, beton yapımında kullanılan temel bir malzemedir.</p>
+      </div>
+      <!-- Tuğla -->
+      <div class="product-card">
+        <img src="tuğla.jpg" alt="Tuğla">
+        <h3>Tuğla</h3>
+        <p>Tuğla, duvar yapımında kullanılan klasik ve dayanıklı bir malzemedir.</p>
+      </div>
+      <!-- Kiremit -->
+      <div class="product-card">
+        <img src="rk.jpg" alt="Kiremit">
+        <h3>Kiremit</h3>
+        <p>Kiremit, çatı kaplamalarında kullanılan estetik ve dayanıklı bir malzemedir.</p>
+      </div>
+      <!-- Alçıpan -->
+      <div class="product-card">
+        <img src="alcipan.jpg" alt="Alçıpan">
+        <h3>Alçıpan</h3>
+        <p>Alçıpan, duvar ve tavan kaplamalarında kullanılan hafif bir malzemedir.</p>
+      </div>
+      <!-- OSB -->
+      <div class="product-card">
+        <img src="osb-3.jpg" alt="OSB">
+        <h3>OSB</h3>
+        <p>OSB, yapı malzemesi olarak kullanılan dayanıklı bir ahşap üründür.</p>
+      </div>
+      <!-- Pleamut -->
+      <div class="product-card">
+        <img src="pleamut.jpg" alt="Pleamut">
+        <h3>Pleamut</h3>
+        <p>Pleamut, dekoratif amaçlı kullanılan bir ahşap malzemedir.</p>
+      </div>
+      <!-- Kalıp Tahtası -->
+      <div class="product-card">
+        <img src="ahsap15.jpg" alt="Kalıp Tahtası">
+        <h3>Kalıp Tahtası</h3>
+        <p>Kalıp tahtası, beton döküm işlerinde kullanılan bir malzemedir.</p>
+      </div>
     </div>
   </section>
 
@@ -493,10 +384,7 @@
   <section id="about" class="about">
     <h2>Hakkında</h2>
     <p>
-      Başkent İnşaat, inşaat sektöründe uzun yıllara dayanan deneyimi ile kaliteli ve güvenilir hizmet sunmayı hedeflemektedir. Müşteri memnuniyetini ön planda tutarak, her projede en iyi malzemeleri kullanarak sağlam yapılar inşa ediyoruz. Ekibimiz, alanında uzman profesyonellerden oluşmakta olup, her türlü inşaat projesinde sizlere destek vermektedir.
-    </p>
-    <p>
-      Yenilikçi yaklaşımımız ve teknolojik altyapımız ile sektördeki gelişmeleri takip ederek, en güncel çözümleri sunmaktayız. Başkent İnşaat olarak, güvenli ve estetik yapılar inşa etmek için çalışıyoruz.
+      Başkent İnşaat, inşaat sektöründe uzun yıllara dayanan deneyimi ile kaliteli ve güvenilir hizmet sunmayı hedeflemektedir. Müşteri memnuniyetini ön planda tutarak, her projede en iyi malzemeleri kullanarak sağlam yapılar inşa ediyoruz.
     </p>
   </section>
 
@@ -509,54 +397,23 @@
       <textarea placeholder="Mesajınız" rows="5" required></textarea>
       <button type="submit">Gönder</button>
     </form>
-    <!-- WhatsApp Butonu -->
-    <a href="https://wa.me/905466619657" class="whatsapp-button" target="_blank">
-      <i class="fab fa-whatsapp"></i> WhatsApp
-    </a>
   </section>
 
-  <!-- Modal HTML -->
-  <div id="myModal" class="modal">
-    <div class="modal-content">
-      <span class="close" onclick="closeModal()">&times;</span>
-      <p>Bu bir modal pencere!</p>
-    </div>
-  </div>
-
   <script>
-    // AI Asistan
-    function openAI() {
-      const userInput = prompt("Merhaba! Size nasıl yardımcı olabilirim?");
-      if (userInput && !userInput.toLowerCase().includes("kötü")) {
-        alert("İş sektörüyle ilgili sorularınızı yanıtlamak için buradayım. Sorunuz: " + userInput);
-      } else {
-        alert("Üzgünüm, bu tür mesajlara cevap veremem.");
-      }
+    // Slider Animasyonu
+    const sliderImages = document.querySelectorAll(".slider-image");
+    let currentImageIndex = 0;
+
+    function showNextImage() {
+      // Mevcut resmi gizle
+      sliderImages[currentImageIndex].classList.remove("active");
+      // Bir sonraki resmi göster
+      currentImageIndex = (currentImageIndex + 1) % sliderImages.length;
+      sliderImages[currentImageIndex].classList.add("active");
     }
 
-    // Fotoğrafların değişimi için gerekli kod
-    let currentSlide = 0; // Mevcut slayt
-    const slides = document.querySelectorAll('.slide'); // Tüm slaytları seç
-    const totalSlides = slides.length; // Toplam slayt sayısı
-
-    function showSlide(index) {
-        // Slaytları gizle
-        slides.forEach((slide) => {
-            slide.style.display = 'none';
-        });
-        // Geçerli slaytı göster
-        slides[index].style.display = 'block';
-    }
-
-    function nextSlide() {
-        currentSlide = (currentSlide + 1) % totalSlides; // Sonraki slayta geç
-        showSlide(currentSlide); // Geçerli slaytı göster
-    }
-
-    // İlk slaytı göster
-    showSlide(currentSlide);
-    // Her 5 saniyede bir slaytı değiştir
-    setInterval(nextSlide, 5000);
+    // Her 4 saniyede bir resmi değiştir
+    setInterval(showNextImage, 4000);
 
     // Form validasyonu
     document.querySelector('.contact form').addEventListener('submit', function(event) {
@@ -565,17 +422,9 @@
 
         if (!name || !email) {
             alert("Lütfen tüm alanları doldurun.");
-            event.preventDefault(); // Formun gönderilmesini engelle
+            event.preventDefault();
         }
     });
-
-    function openModal() {
-      document.getElementById("myModal").style.display = "block";
-    }
-
-    function closeModal() {
-      document.getElementById("myModal").style.display = "none";
-    }
   </script>
 </body>
 </html>
