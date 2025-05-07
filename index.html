@@ -1,1497 +1,706 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Başkent İnşaat</title>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script>
-    tailwind.config = {
-      darkMode: 'class',
-      theme: {
-        extend: {
-          colors: {
-            primary: {
-              DEFAULT: '#5D5CDE',
-              dark: '#4A49B0',
-              light: '#7E7DE8'
-            },
-            accent: {
-              DEFAULT: '#f44336',
-              dark: '#d32f2f',
-              light: '#ef5350'
-            },
-            construction: {
-              DEFAULT: '#FFB300',
-              dark: '#E69500',
-              light: '#FFC233'
-            }
-          },
-          fontFamily: {
-            sans: ['Inter', 'sans-serif'],
-            heading: ['Montserrat', 'sans-serif'],
-          },
-          animation: {
-            'float': 'float 6s ease-in-out infinite',
-            'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
-          },
-          keyframes: {
-            float: {
-              '0%, 100%': { transform: 'translateY(0px)' },
-              '50%': { transform: 'translateY(-20px)' },
-            }
-          }
-        }
-      }
-    }
-  </script>
-  <style>
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Montserrat:wght@500;600;700;800&display=swap');
-
-    :root {
-      --primary: #5D5CDE;
-      --primary-dark: #4A49B0;
-      --primary-light: #7E7DE8;
-      --accent: #f44336;
-      --accent-dark: #d32f2f;
-      --accent-light: #ef5350;
-      --construction: #FFB300;
-      --construction-dark: #E69500;
-      --construction-light: #FFC233;
-    }
-
-    html {
-      scroll-behavior: smooth;
-    }
-
-    body {
-      font-family: 'Inter', sans-serif;
-      overflow-x: hidden;
-    }
-
-    h1, h2, h3, h4, h5, h6 {
-      font-family: 'Montserrat', sans-serif;
-    }
-
-    .hero-pattern {
-      background-color: #f5f5f5;
-      background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23e0e0e0' fill-opacity='0.4'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
-    }
-
-    .dark .hero-pattern {
-      background-color: #1e1e1e;
-      background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23303030' fill-opacity='0.4'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
-    }
-
-    /* Slider Styles */
-    .slider {
-      height: calc(100vh - 80px);
-      min-height: 400px;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .slider-image {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      opacity: 0;
-      transform: scale(1.1);
-      transition: opacity 1s ease, transform 1.5s ease;
-    }
-
-    .slider-image.active {
-      opacity: 1;
-      transform: scale(1);
-    }
-
-    .slider-overlay {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.6));
-      z-index: 1;
-    }
-
-    .slider-controls {
-      position: absolute;
-      bottom: 30px;
-      left: 50%;
-      transform: translateX(-50%);
-      display: flex;
-      gap: 8px;
-      z-index: 10;
-    }
-
-    .slider-dot {
-      width: 12px;
-      height: 12px;
-      border-radius: 50%;
-      background: rgba(255, 255, 255, 0.5);
-      cursor: pointer;
-      transition: all 0.3s ease;
-    }
-
-    .slider-dot.active {
-      background: var(--construction);
-      transform: scale(1.2);
-    }
-
-    /* Product Card Styles */
-    .product-card {
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
-      transform: translateY(0);
-      background: white;
-      border-radius: 12px;
-      padding: 1.5rem;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-    }
-
-    .product-card:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    }
-
-    /* Filter Buttons */
-    .filter-btn {
-      transition: all 0.3s ease;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .filter-btn::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: -100%;
-      width: 100%;
-      height: 100%;
-      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
-      transition: left 0.7s ease;
-    }
-
-    .filter-btn:hover::before {
-      left: 100%;
-    }
-
-    /* Parallax Section */
-    .parallax {
-      position: relative;
-      height: 400px;
-      background-attachment: fixed;
-      background-position: center;
-      background-repeat: no-repeat;
-      background-size: cover;
-    }
-
-    .parallax-overlay {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0,0,0,0.6);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      flex-direction: column;
-      text-align: center;
-      color: white;
-      padding: 0 20px;
-    }
-
-    /* Scroll To Top Button */
-    .scroll-top {
-      position: fixed;
-      right: 20px;
-      bottom: 80px;
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
-      background: var(--accent);
-      color: white;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      cursor: pointer;
-      opacity: 0;
-      visibility: hidden;
-      transition: all 0.3s ease;
-      z-index: 100;
-    }
-
-    .scroll-top.active {
-      opacity: 1;
-      visibility: visible;
-    }
-
-    /* Animated Elements */
-    .fade-in {
-      animation: fadeIn 1s ease forwards;
-    }
-
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(20px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    /* Shape Generator Patterns */
-    .shape-pattern-1 {
-      background-color: #f5f5f5;
-      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='49' viewBox='0 0 28 49'%3E%3Cg fill-rule='evenodd'%3E%3Cg id='hexagons' fill='%23d0d0d0' fill-opacity='0.4' fill-rule='nonzero'%3E%3Cpath d='M13.99 9.25l13 7.5v15l-13 7.5L1 31.75v-15l12.99-7.5zM3 17.9v12.7l10.99 6.34 11-6.35V17.9l-11-6.34L3 17.9zM0 15l12.98-7.5V0h-2v6.35L0 12.69v2.3zm0 18.5L12.98 41v8h-2v-6.85L0 35.81v-2.3zM15 0v7.5L27.99 15H28v-2.31h-.01L17 6.35V0h-2zm0 49v-8l12.99-7.5H28v2.31h-.01L17 42.15V49h-2z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
-    }
-
-    .dark .shape-pattern-1 {
-      background-color: #222;
-      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='49' viewBox='0 0 28 49'%3E%3Cg fill-rule='evenodd'%3E%3Cg id='hexagons' fill='%23333' fill-opacity='0.4' fill-rule='nonzero'%3E%3Cpath d='M13.99 9.25l13 7.5v15l-13 7.5L1 31.75v-15l12.99-7.5zM3 17.9v12.7l10.99 6.34 11-6.35V17.9l-11-6.34L3 17.9zM0 15l12.98-7.5V0h-2v6.35L0 12.69v2.3zm0 18.5L12.98 41v8h-2v-6.85L0 35.81v-2.3zM15 0v7.5L27.99 15H28v-2.31h-.01L17 6.35V0h-2zm0 49v-8l12.99-7.5H28v2.31h-.01L17 42.15V49h-2z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
-    }
-
-    .shape-pattern-2 {
-      background-color: #ffffff;
-      background-image: url("data:image/svg+xml,%3Csvg width='100' height='20' viewBox='0 0 100 20' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M21.184 20c.357-.13.72-.264.888-.14 1.855 1.67 4.073 3.175 6.66 3.17 4.27-.01 8.1-3.21 10.09-7.215 1.34-2.7 1.36-5.03.59-6.685-.61-1.31-1.78-1.88-2.85-1.7-3.27.53-3.58 4.82-5.88 6.97-1.86 1.75-4.26 1.27-6.86.89-2.28-.34-4.57-.73-6.33-1.79-1.37-.83-11.63-7.2-13.09-7.17-1.66.03-2.98 1.62-2.42 3.8.55 2.15 2.53 7.96 5.51 12.3 1.14 1.67 2.87 3.06 4.37 3.53 1.38.43 2.77.61 4.07.62 1.65 0 3.22-.25 4.85-.69zM42.19 0c3.04.13 7.22.96 9.34 2.16 2.06 1.17 3.63 2.9 4.38 5.02.75 2.14.46 4.63-1.23 6.2v.03c-1.1 1.03-2.51 1.88-4.3 2.05-1.58.15-3.2-.13-4.88-.9-1.78-.83-3.16-1.9-4.3-2.74-1.68-1.24-9.44-6.9-11.34-6.97-1.63-.06-2.93 1.17-2.34 3.57.6 2.45 2.77 7.4 6.07 11.46 1.3 1.6 2.9 2.92 4.25 3.3 1.42.4 2.83.32 4.04-.08.87-.3 1.6-.77 2.2-1.27.25-.2.5-.43.73-.67 1.34-1.43 1.63-3.52.88-5.37-.38-.9-.97-1.73-1.5-2.42.25.3.5.54.7.74 1.4 1.33 3.28 2.48 6.22 2.28 3.6-.24 5.8-3.16 5.92-6.13.07-1.5-.3-3.2-1.47-4.55C58.5 3.68 53.27 3.42 47.95 2.28c-2.44-.53-4.65-1.3-6.73-2.26-1.91-.87-3.03-.57-4.03.06.95.83 1.92 1.6 3 2.42 1.35 1.05 2.7 2.06 4.1 3.02 1.4.96 3.07 1.92 4.95 2.2.46.07.95.1 1.44.1 2.76 0 5.63-1.17 6.4-4.27.33-1.33 0-2.33-.68-3.1-.24-.26-.48-.5-.75-.7-1.1-.8-2.6-1.3-4.17-1.7-1.67-.43-3.45-.82-5.23-1.3-1.86-.5-3.75-1.06-5.35-1.8-1.62-.75-11.6-6.23-13.1-6.2-1.64.04-3 1.5-2.43 3.97.56 2.5 2.66 8.28 5.84 12.66 1.28 1.77 2.84 3.23 4.55 3.82 2.07.7 4.15.26 5.86-.84z' fill='%23d1d1d1' fill-opacity='0.4' fill-rule='evenodd'/%3E%3C/svg%3E");
-    }
-
-    .dark .shape-pattern-2 {
-      background-color: #121212;
-      background-image: url("data:image/svg+xml,%3Csvg width='100' height='20' viewBox='0 0 100 20' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M21.184 20c.357-.13.72-.264.888-.14 1.855 1.67 4.073 3.175 6.66 3.17 4.27-.01 8.1-3.21 10.09-7.215 1.34-2.7 1.36-5.03.59-6.685-.61-1.31-1.78-1.88-2.85-1.7-3.27.53-3.58 4.82-5.88 6.97-1.86 1.75-4.26 1.27-6.86.89-2.28-.34-4.57-.73-6.33-1.79-1.37-.83-11.63-7.2-13.09-7.17-1.66.03-2.98 1.62-2.42 3.8.55 2.15 2.53 7.96 5.51 12.3 1.14 1.67 2.87 3.06 4.37 3.53 1.38.43 2.77.61 4.07.62 1.65 0 3.22-.25 4.85-.69zM42.19 0c3.04.13 7.22.96 9.34 2.16 2.06 1.17 3.63 2.9 4.38 5.02.75 2.14.46 4.63-1.23 6.2v.03c-1.1 1.03-2.51 1.88-4.3 2.05-1.58.15-3.2-.13-4.88-.9-1.78-.83-3.16-1.9-4.3-2.74-1.68-1.24-9.44-6.9-11.34-6.97-1.63-.06-2.93 1.17-2.34 3.57.6 2.45 2.77 7.4 6.07 11.46 1.3 1.6 2.9 2.92 4.25 3.3 1.42.4 2.83.32 4.04-.08.87-.3 1.6-.77 2.2-1.27.25-.2.5-.43.73-.67 1.34-1.43 1.63-3.52.88-5.37-.38-.9-.97-1.73-1.5-2.42.25.3.5.54.7.74 1.4 1.33 3.28 2.48 6.22 2.28 3.6-.24 5.8-3.16 5.92-6.13.07-1.5-.3-3.2-1.47-4.55C58.5 3.68 53.27 3.42 47.95 2.28c-2.44-.53-4.65-1.3-6.73-2.26-1.91-.87-3.03-.57-4.03.06.95.83 1.92 1.6 3 2.42 1.35 1.05 2.7 2.06 4.1 3.02 1.4.96 3.07 1.92 4.95 2.2.46.07.95.1 1.44.1 2.76 0 5.63-1.17 6.4-4.27.33-1.33 0-2.33-.68-3.1-.24-.26-.48-.5-.75-.7-1.1-.8-2.6-1.3-4.17-1.7-1.67-.43-3.45-.82-5.23-1.3-1.86-.5-3.75-1.06-5.35-1.8-1.62-.75-11.6-6.23-13.1-6.2-1.64.04-3 1.5-2.43 3.97.56 2.5 2.66 8.28 5.84 12.66 1.28 1.77 2.84 3.23 4.55 3.82 2.07.7 4.15.26 5.86-.84z' fill='%23333' fill-opacity='0.4' fill-rule='evenodd'/%3E%3C/svg%3E");
-    }
-
-    /* Mobile Menu */
-    .mobile-nav {
-      position: fixed;
-      top: 0;
-      right: -100%;
-      width: 80%;
-      max-width: 300px;
-      height: 100vh;
-      background: #fff;
-      z-index: 1000;
-      transition: all 0.5s ease;
-      box-shadow: -5px 0 15px rgba(0,0,0,0.1);
-      padding: 80px 20px 20px;
-    }
-
-    .dark .mobile-nav {
-      background: #1e1e1e;
-    }
-
-    .mobile-nav.active {
-      right: 0;
-    }
-
-    .mobile-nav-overlay {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0,0,0,0.6);
-      z-index: 999;
-      opacity: 0;
-      visibility: hidden;
-      transition: all 0.5s ease;
-    }
-
-    .mobile-nav-overlay.active {
-      opacity: 1;
-      visibility: visible;
-    }
-
-    .mobile-nav-close {
-      position: absolute;
-      top: 20px;
-      right: 20px;
-      font-size: 24px;
-      cursor: pointer;
-    }
-
-    /* Preloader */
-    .preloader {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: #fff;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      z-index: 9999;
-      transition: opacity 0.5s ease, visibility 0.5s ease;
-    }
-
-    .dark .preloader {
-      background: #121212;
-    }
-
-    .preloader.fade {
-      opacity: 0;
-      visibility: hidden;
-    }
-
-    .loader {
-      width: 60px;
-      height: 60px;
-      border: 5px solid #f3f3f3;
-      border-top: 5px solid var(--construction);
-      border-radius: 50%;
-      animation: spin 1s linear infinite;
-    }
-
-    .dark .loader {
-      border-color: #333;
-      border-top-color: var(--construction);
-    }
-
-    @keyframes spin {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Peyzaj 42 - Profesyonel Peyzaj Tasarım Hizmetleri</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
-<body class="bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100 transition-colors duration-300">
-  <!-- Preloader -->
-  <div class="preloader">
-    <div class="loader"></div>
-  </div>
-
-  <!-- Navbar -->
-  <nav class="sticky top-0 bg-white dark:bg-gray-800 shadow-md z-50 transition-all duration-300" id="navbar">
-    <div class="container mx-auto px-4 py-3 flex justify-between items-center">
-      <!-- Logo -->
-      <a href="#home" class="flex items-center space-x-2">
-        <span class="text-xl md:text-2xl font-bold text-accent">
-          Başkent İnşaat
-        </span>
-      </a>
-
-      <!-- Desktop Menu -->
-      <ul class="hidden md:flex space-x-8 items-center">
-        <li><a href="#home" class="hover:text-accent text-base font-semibold transition-colors duration-300 nav-link">Ana Sayfa</a></li>
-        <li><a href="#products" class="hover:text-accent text-base font-semibold transition-colors duration-300 nav-link">Ürünler</a></li>
-        <li><a href="#projects" class="hover:text-accent text-base font-semibold transition-colors duration-300 nav-link">Projeler</a></li>
-        <li><a href="#testimonials" class="hover:text-accent text-base font-semibold transition-colors duration-300 nav-link">Referanslar</a></li>
-        <li><a href="#about" class="hover:text-accent text-base font-semibold transition-colors duration-300 nav-link">Hakkında</a></li>
-        <li><a href="#contact" class="hover:text-accent text-base font-semibold transition-colors duration-300 nav-link">İletişim</a></li>
-      </ul>
-
-      <!-- Mobile Menu Button & Theme Toggle -->
-      <div class="flex items-center space-x-4 md:space-x-6">
-        <button id="theme-toggle" class="w-10 h-10 rounded-full flex items-center justify-center transition-colors duration-300 hover:bg-gray-200 dark:hover:bg-gray-700">
-          <i class="fas fa-sun text-xl dark:hidden"></i>
-          <i class="fas fa-moon text-xl hidden dark:block"></i>
-        </button>
-        <button id="mobile-menu-btn" class="block md:hidden text-2xl">
-          <i class="fas fa-bars"></i>
-        </button>
-      </div>
-    </div>
-  </nav>
-
-  <!-- Mobile Navigation -->
-  <div class="mobile-nav-overlay" id="mobile-nav-overlay"></div>
-  <div class="mobile-nav" id="mobile-nav">
-    <span class="mobile-nav-close" id="mobile-nav-close">
-      <i class="fas fa-times"></i>
-    </span>
-    <ul class="flex flex-col space-y-6">
-      <li><a href="#home" class="block text-lg font-semibold hover:text-accent transition-colors duration-300 mobile-nav-link"><i class="fas fa-home mr-2"></i>Ana Sayfa</a></li>
-      <li><a href="#products" class="block text-lg font-semibold hover:text-accent transition-colors duration-300 mobile-nav-link">Ürünler</a></li>
-      <li><a href="#projects" class="block text-lg font-semibold hover:text-accent transition-colors duration-300 mobile-nav-link">Projeler</a></li>
-      <li><a href="#testimonials" class="block text-lg font-semibold hover:text-accent transition-colors duration-300 mobile-nav-link">Referanslar</a></li>
-      <li><a href="#about" class="block text-lg font-semibold hover:text-accent transition-colors duration-300 mobile-nav-link">Hakkında</a></li>
-      <li><a href="#contact" class="block text-lg font-semibold hover:text-accent transition-colors duration-300 mobile-nav-link">İletişim</a></li>
-    </ul>
-    <div class="mt-10 pt-6 border-t border-gray-200 dark:border-gray-700">
-      <div class="flex flex-col space-y-4">
-        <a href="tel:+905466619657" class="flex items-center text-base">
-          +90 546 661 9657
-        </a>
-        <a href="mailto:info@baskeantinsaat.com" class="flex items-center text-base">
-          info@baskentinsaat.com
-        </a>
-        <p class="flex items-center text-base">
-          Konya, Türkiye
-        </p>
-      </div>
-      <div class="flex space-x-4 mt-6">
-        <a href="#" class="w-10 h-10 rounded-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center transition-colors duration-300 hover:bg-construction hover:text-white">
-          Facebook
-        </a>
-        <a href="#" class="w-10 h-10 rounded-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center transition-colors duration-300 hover:bg-construction hover:text-white">
-          Instagram
-        </a>
-        <a href="#" class="w-10 h-10 rounded-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center transition-colors duration-300 hover:bg-construction hover:text-white">
-          Twitter
-        </a>
-      </div>
-    </div>
-  </div>
-
-  <!-- Hero Section with Slider -->
-  <section id="home" class="slider relative">
-    <div class="slider-overlay"></div>
-    
-    <div class="slider-images">
-      <!-- Using generated patterns instead of external images -->
-      <div class="slider-image active" style="background: linear-gradient(45deg, #3498db, #2c3e50); opacity: 0.8;"></div>
-      <div class="slider-image" style="background: linear-gradient(45deg, #e74c3c, #c0392b); opacity: 0.8;"></div>
-      <div class="slider-image" style="background: linear-gradient(45deg, #f39c12, #d35400); opacity: 0.8;"></div>
-      <div class="slider-image" style="background: linear-gradient(45deg, #2ecc71, #27ae60); opacity: 0.8;"></div>
-    </div>
-
-    <div class="slider-content relative z-10 container mx-auto px-4 h-full flex flex-col justify-center items-center text-center">
-      <h1 class="text-4xl md:text-6xl font-extrabold mb-4 text-white animate-float" data-aos="fade-up">
-        <span class="block">Başkent İnşaat</span>
-      </h1>
-      <h2 class="text-2xl md:text-3xl font-bold mb-6 text-white" data-aos="fade-up" data-aos-delay="200">
-        <span class="px-4 py-2 bg-construction/90 rounded-lg inline-block">Kalite ve Güvenin Adresi</span>
-      </h2>
-      <p class="text-lg md:text-xl max-w-3xl text-white font-medium leading-relaxed" data-aos="fade-up" data-aos-delay="400">
-        İnşaat sektöründe en kaliteli malzemeler ve uzman kadromuzla 
-        her türlü inşaat projesinde yanınızdayız.
-      </p>
-      <div class="mt-8 flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4" data-aos="fade-up" data-aos-delay="600">
-        <a href="#products" class="px-8 py-3 bg-construction text-white font-bold rounded-lg hover:bg-construction-dark transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1">
-          Ürünlerimiz
-        </a>
-        <a href="#contact" class="px-8 py-3 bg-white text-gray-900 font-bold rounded-lg hover:bg-gray-100 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1">
-          İletişime Geç
-        </a>
-      </div>
-    </div>
-
-    <div class="slider-controls">
-      <span class="slider-dot active" data-index="0"></span>
-      <span class="slider-dot" data-index="1"></span>
-      <span class="slider-dot" data-index="2"></span>
-      <span class="slider-dot" data-index="3"></span>
-    </div>
-  </section>
-
-  <!-- Stats Counter Section -->
-  <section class="py-12 bg-white dark:bg-gray-800 shadow-md relative z-10 -mt-16 rounded-t-3xl">
-    <div class="container mx-auto px-4">
-      <div class="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
-        <div class="p-6 rounded-lg" data-aos="fade-up">
-          <div class="text-4xl md:text-5xl font-bold text-construction mb-2"><span class="counter" data-target="25">0</span>+</div>
-          <div class="text-sm md:text-base font-semibold uppercase tracking-wider">Yıllık Deneyim</div>
-        </div>
-        <div class="p-6 rounded-lg" data-aos="fade-up" data-aos-delay="100">
-          <div class="text-4xl md:text-5xl font-bold text-construction mb-2"><span class="counter" data-target="300">0</span>+</div>
-          <div class="text-sm md:text-base font-semibold uppercase tracking-wider">Tamamlanan Proje</div>
-        </div>
-        <div class="p-6 rounded-lg" data-aos="fade-up" data-aos-delay="200">
-          <div class="text-4xl md:text-5xl font-bold text-construction mb-2"><span class="counter" data-target="150">0</span>+</div>
-          <div class="text-sm md:text-base font-semibold uppercase tracking-wider">Mutlu Müşteri</div>
-        </div>
-        <div class="p-6 rounded-lg" data-aos="fade-up" data-aos-delay="300">
-          <div class="text-4xl md:text-5xl font-bold text-construction mb-2"><span class="counter" data-target="50">0</span>+</div>
-          <div class="text-sm md:text-base font-semibold uppercase tracking-wider">Ürün Çeşidi</div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Products Section -->
-  <section id="products" class="py-16 bg-gray-50 dark:bg-gray-900 shape-pattern-1">
-    <div class="container mx-auto px-4">
-      <div class="text-center mb-12">
-        <h2 class="text-3xl md:text-4xl font-bold mb-4" data-aos="fade-up">Kaliteli Ürünlerimiz</h2>
-        <p class="text-lg text-gray-600 dark:text-gray-400 max-w-3xl mx-auto" data-aos="fade-up" data-aos-delay="100">
-          İnşaat projeleriniz için ihtiyaç duyduğunuz tüm yapı malzemeleri geniş ürün yelpazemizde mevcuttur.
-        </p>
-      </div>
-
-      <!-- Filter Buttons -->
-      <div class="flex flex-wrap justify-center mb-10 gap-3" data-aos="fade-up" data-aos-delay="200">
-        <button class="filter-btn px-5 py-2 rounded-full bg-white dark:bg-gray-800 shadow-md text-sm md:text-base font-medium hover:bg-construction hover:text-white dark:hover:bg-construction transition-all duration-300 active" data-filter="all">
-          Tümü
-        </button>
-        <button class="filter-btn px-5 py-2 rounded-full bg-white dark:bg-gray-800 shadow-md text-sm md:text-base font-medium hover:bg-construction hover:text-white dark:hover:bg-construction transition-all duration-300" data-filter="duvar">
-          Duvar Malzemeleri
-        </button>
-        <button class="filter-btn px-5 py-2 rounded-full bg-white dark:bg-gray-800 shadow-md text-sm md:text-base font-medium hover:bg-construction hover:text-white dark:hover:bg-construction transition-all duration-300" data-filter="sivama">
-          Sıva ve Alçı
-        </button>
-        <button class="filter-btn px-5 py-2 rounded-full bg-white dark:bg-gray-800 shadow-md text-sm md:text-base font-medium hover:bg-construction hover:text-white dark:hover:bg-construction transition-all duration-300" data-filter="kum">
-          Agregalar
-        </button>
-        <button class="filter-btn px-5 py-2 rounded-full bg-white dark:bg-gray-800 shadow-md text-sm md:text-base font-medium hover:bg-construction hover:text-white dark:hover:bg-construction transition-all duration-300" data-filter="ahsap">
-          Ahşap Ürünler
-        </button>
-      </div>
-
-      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 md:gap-8">
-        <!-- Beton Pirket -->
-        <div class="product-card bg-white dark:bg-gray-800 rounded-lg shadow-lg" data-category="duvar" data-aos="fade-up">
-          <div class="p-5">
-            <span class="inline-block px-3 py-1 text-xs font-semibold bg-gray-100 dark:bg-gray-700 rounded-full mb-3">Duvar Malzemesi</span>
-            <h3 class="text-xl font-bold mb-2">Beton Pirket</h3>
-            <p class="text-gray-600 dark:text-gray-400 mb-4">Beton pirket, inşaatlarda temel ve duvar yapımında kullanılan dayanıklı bir malzemedir.</p>
-            <div class="flex justify-between items-center pt-2 border-t border-gray-200 dark:border-gray-700">
-              <span class="text-sm font-medium">Stokta Mevcut</span>
-              <a href="#contact" class="text-construction hover:text-construction-dark font-medium transition-colors duration-300">Sipariş Et</a>
+<body>
+    <!-- Header -->
+    <header>
+        <nav>
+            <div class="logo">
+                <i class="fas fa-leaf"></i>
+                <span>Peyzaj 42</span>
             </div>
-          </div>
+            <div class="menu-toggle">
+                <i class="fas fa-bars"></i>
+            </div>
+            <ul class="nav-links">
+                <li><a href="#anasayfa" class="active">Ana Sayfa</a></li>
+                <li><a href="#hizmetler">Hizmetler</a></li>
+                <li><a href="#urunler">Ürünler</a></li>
+                <li><a href="#hakkimizda">Hakkımızda</a></li>
+                <li><a href="#iletisim">İletişim</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section id="anasayfa" class="hero">
+        <div class="hero-background">
+            <img src="https://images.unsplash.com/photo-1585320806297-9794b3e4eeae?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80" alt="Peyzaj Tasarım">
+            <div class="overlay"></div>
         </div>
-
-        <!-- Bims Pirket -->
-        <div class="product-card bg-white dark:bg-gray-800 rounded-lg shadow-lg" data-category="duvar" data-aos="fade-up" data-aos-delay="100">
-          <div class="p-5">
-            <span class="inline-block px-3 py-1 text-xs font-semibold bg-gray-100 dark:bg-gray-700 rounded-full mb-3">Duvar Malzemesi</span>
-            <h3 class="text-xl font-bold mb-2">Bims Pirket</h3>
-            <p class="text-gray-600 dark:text-gray-400 mb-4">Bims pirket, çeşitli inşaat projelerinde kullanılan çok yönlü bir malzemedir.</p>
-            <div class="flex justify-between items-center pt-2 border-t border-gray-200 dark:border-gray-700">
-              <span class="text-sm font-medium">Stokta Mevcut</span>
-              <a href="#contact" class="text-construction hover:text-construction-dark font-medium transition-colors duration-300">Sipariş Et</a>
-            </div>
-          </div>
-        </div>
-
-        <!-- Sıva Alçısı -->
-        <div class="product-card bg-white dark:bg-gray-800 rounded-lg shadow-lg" data-category="sivama" data-aos="fade-up" data-aos-delay="200">
-          <div class="p-5">
-            <span class="inline-block px-3 py-1 text-xs font-semibold bg-gray-100 dark:bg-gray-700 rounded-full mb-3">Sıva ve Alçı</span>
-            <h3 class="text-xl font-bold mb-2">Sıva Alçısı</h3>
-            <p class="text-gray-600 dark:text-gray-400 mb-4">Sıva alçısı, duvarların düzgün ve pürüzsüz bir yüzeye kavuşmasını sağlar.</p>
-            <div class="flex justify-between items-center pt-2 border-t border-gray-200 dark:border-gray-700">
-              <span class="text-sm font-medium">Stokta Mevcut</span>
-              <a href="#contact" class="text-construction hover:text-construction-dark font-medium transition-colors duration-300">Sipariş Et</a>
-            </div>
-          </div>
-        </div>
-
-        <!-- Lento -->
-        <div class="product-card bg-white dark:bg-gray-800 rounded-lg shadow-lg" data-category="duvar" data-aos="fade-up" data-aos-delay="300">
-          <div class="p-5">
-            <span class="inline-block px-3 py-1 text-xs font-semibold bg-gray-100 dark:bg-gray-700 rounded-full mb-3">Duvar Malzemesi</span>
-            <h3 class="text-xl font-bold mb-2">Lento</h3>
-            <p class="text-gray-600 dark:text-gray-400 mb-4">Lento, inşaat projelerinde kullanılan hafif ve dayanıklı bir malzemedir.</p>
-            <div class="flex justify-between items-center pt-2 border-t border-gray-200 dark:border-gray-700">
-              <span class="text-sm font-medium">Stokta Mevcut</span>
-              <a href="#contact" class="text-construction hover:text-construction-dark font-medium transition-colors duration-300">Sipariş Et</a>
-            </div>
-          </div>
-        </div>
-
-        <!-- Saten Alçısı -->
-        <div class="product-card bg-white dark:bg-gray-800 rounded-lg shadow-lg" data-category="sivama" data-aos="fade-up">
-          <div class="p-5">
-            <span class="inline-block px-3 py-1 text-xs font-semibold bg-gray-100 dark:bg-gray-700 rounded-full mb-3">Sıva ve Alçı</span>
-            <h3 class="text-xl font-bold mb-2">Saten Alçısı</h3>
-            <p class="text-gray-600 dark:text-gray-400 mb-4">Saten alçısı, duvarlara son kat olarak uygulanır ve pürüzsüz bir yüzey sağlar.</p>
-            <div class="flex justify-between items-center pt-2 border-t border-gray-200 dark:border-gray-700">
-              <span class="text-sm font-medium">Stokta Mevcut</span>
-              <a href="#contact" class="text-construction hover:text-construction-dark font-medium transition-colors duration-300">Sipariş Et</a>
-            </div>
-          </div>
-        </div>
-
-        <!-- Kartonpiyer -->
-        <div class="product-card bg-white dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden" data-category="sivama" data-aos="fade-up" data-aos-delay="100">
-          <div class="p-5">
-            <span class="inline-block px-3 py-1 text-xs font-semibold bg-gray-100 dark:bg-gray-700 rounded-full mb-3">Sıva ve Alçı</span>
-            <h3 class="text-xl font-bold mb-2">Kartonpiyer</h3>
-            <p class="text-gray-600 dark:text-gray-400 mb-4">Kartonpiyer, tavan ve duvar birleşimlerinde estetik bir görünüm sağlar.</p>
-            <div class="flex justify-between items-center pt-2 border-t border-gray-200 dark:border-gray-700">
-              <span class="text-sm font-medium">Stokta Mevcut</span>
-              <a href="#contact" class="text-construction hover:text-construction-dark font-medium transition-colors duration-300">Sipariş Et</a>
-            </div>
-          </div>
-        </div>
-
-        <!-- Kaba Sıva Kumu -->
-        <div class="product-card bg-white dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden" data-category="kum" data-aos="fade-up" data-aos-delay="200">
-
-          <div class="p-5">
-            <span class="inline-block px-3 py-1 text-xs font-semibold bg-gray-100 dark:bg-gray-700 rounded-full mb-3">Agregalar</span>
-            <h3 class="text-xl font-bold mb-2">Kaba Sıva Kumu</h3>
-            <p class="text-gray-600 dark:text-gray-400 mb-4">Kaba sıva kumu, duvarların ilk katmanında kullanılan bir malzemedir.</p>
-            <div class="flex justify-between items-center pt-2 border-t border-gray-200 dark:border-gray-700">
-              <span class="text-sm font-medium">Stokta Mevcut</span>
-              <a href="#contact" class="text-construction hover:text-construction-dark font-medium transition-colors duration-300">Sipariş Et</a>
-            </div>
-          </div>
-        </div>
-
-        <!-- Beton Kumu -->
-        <div class="product-card bg-white dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden" data-category="kum" data-aos="fade-up">
-
-          <div class="p-5">
-            <span class="inline-block px-3 py-1 text-xs font-semibold bg-gray-100 dark:bg-gray-700 rounded-full mb-3">Agregalar</span>
-            <h3 class="text-xl font-bold mb-2">Beton Kumu</h3>
-            <p class="text-gray-600 dark:text-gray-400 mb-4">Beton kumu, beton karışımlarında kullanılan temel yapı malzemesidir.</p>
-            <div class="flex justify-between items-center pt-2 border-t border-gray-200 dark:border-gray-700">
-              <span class="text-sm font-medium">Stokta Mevcut</span>
-              <a href="#contact" class="text-construction hover:text-construction-dark font-medium transition-colors duration-300">Sipariş Et</a>
-            </div>
-          </div>
-        </div>
-
-        <!-- Tuğla -->
-        <div class="product-card bg-white dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden" data-category="duvar" data-aos="fade-up">
-          <div class="p-5">
-            <span class="inline-block px-3 py-1 text-xs font-semibold bg-gray-100 dark:bg-gray-700 rounded-full mb-3">Duvar Malzemesi</span>
-            <h3 class="text-xl font-bold mb-2">Tuğla</h3>
-            <p class="text-gray-600 dark:text-gray-400 mb-4">Standart tuğla, duvar örme işlemlerinde kullanılan temel yapı malzemesidir.</p>
-            <div class="flex justify-between items-center pt-2 border-t border-gray-200 dark:border-gray-700">
-              <span class="text-sm font-medium">Stokta Mevcut</span>
-              <a href="#contact" class="text-construction hover:text-construction-dark font-medium transition-colors duration-300">Sipariş Et</a>
-            </div>
-          </div>
-        </div>
-
-        <!-- Kiremit -->
-        <div class="product-card bg-white dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden" data-category="cati" data-aos="fade-up">
-
-          <div class="p-5">
-            <span class="inline-block px-3 py-1 text-xs font-semibold bg-gray-100 dark:bg-gray-700 rounded-full mb-3">Çatı Malzemesi</span>
-            <h3 class="text-xl font-bold mb-2">Kiremit</h3>
-            <p class="text-gray-600 dark:text-gray-400 mb-4">Kiremit, çatı kaplama işlemlerinde kullanılan dayanıklı ve estetik bir malzemedir.</p>
-            <div class="flex justify-between items-center pt-2 border-t border-gray-200 dark:border-gray-700">
-              <span class="text-sm font-medium">Stokta Mevcut</span>
-              <a href="#contact" class="text-construction hover:text-construction-dark font-medium transition-colors duration-300">Sipariş Et</a>
-            </div>
-          </div>
-        </div>
-
-        <!-- Alçıpan -->
-        <div class="product-card bg-white dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden" data-category="sivama" data-aos="fade-up">
-
-          <div class="p-5">
-            <span class="inline-block px-3 py-1 text-xs font-semibold bg-gray-100 dark:bg-gray-700 rounded-full mb-3">Sıva ve Alçı</span>
-            <h3 class="text-xl font-bold mb-2">Alçıpan</h3>
-            <p class="text-gray-600 dark:text-gray-400 mb-4">Alçıpan, iç mekan bölme duvarları ve tavan kaplaması için ideal bir malzemedir.</p>
-            <div class="flex justify-between items-center pt-2 border-t border-gray-200 dark:border-gray-700">
-              <span class="text-sm font-medium">Stokta Mevcut</span>
-              <a href="#contact" class="text-construction hover:text-construction-dark font-medium transition-colors duration-300">Sipariş Et</a>
-            </div>
-          </div>
-        </div>
-
-        <!-- OSB -->
-        <div class="product-card bg-white dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden" data-category="ahsap" data-aos="fade-up">
-          <div class="p-5">
-            <span class="inline-block px-3 py-1 text-xs font-semibold bg-gray-100 dark:bg-gray-700 rounded-full mb-3">Ahşap Ürünler</span>
-            <h3 class="text-xl font-bold mb-2">OSB</h3>
-            <p class="text-gray-600 dark:text-gray-400 mb-4">OSB, çok yönlü kullanım alanına sahip dayanıklı bir yapı malzemesidir.</p>
-            <div class="flex justify-between items-center pt-2 border-t border-gray-200 dark:border-gray-700">
-              <span class="text-sm font-medium">Stokta Mevcut</span>
-              <a href="#contact" class="text-construction hover:text-construction-dark font-medium transition-colors duration-300">Sipariş Et</a>
-            </div>
-          </div>
-        </div>
-
-        <!-- Pleymut -->
-        <div class="product-card bg-white dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden" data-category="ahsap" data-aos="fade-up">
-
-          <div class="p-5">
-            <span class="inline-block px-3 py-1 text-xs font-semibold bg-gray-100 dark:bg-gray-700 rounded-full mb-3">Ahşap Ürünler</span>
-            <h3 class="text-xl font-bold mb-2">Pleymut</h3>
-            <p class="text-gray-600 dark:text-gray-400 mb-4">Pleymut, mobilya ve iç mekan uygulamalarında tercih edilen kaliteli bir ahşap malzemedir.</p>
-            <div class="flex justify-between items-center pt-2 border-t border-gray-200 dark:border-gray-700">
-              <span class="text-sm font-medium">Stokta Mevcut</span>
-              <a href="#contact" class="text-construction hover:text-construction-dark font-medium transition-colors duration-300">Sipariş Et</a>
-            </div>
-          </div>
-        </div>
-
-        <!-- Kalıp Tahtası -->
-        <div class="product-card bg-white dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden" data-category="ahsap" data-aos="fade-up">
-          <div class="p-5">
-            <span class="inline-block px-3 py-1 text-xs font-semibold bg-gray-100 dark:bg-gray-700 rounded-full mb-3">Ahşap Ürünler</span>
-            <h3 class="text-xl font-bold mb-2">Kalıp Tahtası</h3>
-            <p class="text-gray-600 dark:text-gray-400 mb-4">Kalıp tahtası, beton döküm işlemlerinde kullanılan dayanıklı bir yapı malzemesidir.</p>
-            <div class="flex justify-between items-center pt-2 border-t border-gray-200 dark:border-gray-700">
-              <span class="text-sm font-medium">Stokta Mevcut</span>
-              <a href="#contact" class="text-construction hover:text-construction-dark font-medium transition-colors duration-300">Sipariş Et</a>
-            </div>
-          </div>
-        </div>
-            <div class="flex justify-between items-center pt-2 border-t border-gray-200 dark:border-gray-700">
-              <span class="text-sm font-medium">Stokta Mevcut</span>
-              <a href="#contact" class="text-construction hover:text-construction-dark font-medium transition-colors duration-300">Sipariş Et</a>
-            </div>
-          </div>
-        </div>
-
-        <!-- Yıkanmış Kum -->
-        <div class="product-card bg-white dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden" data-category="kum" data-aos="fade-up" data-aos-delay="300">
-
-          <div class="p-5">
-            <span class="inline-block px-3 py-1 text-xs font-semibold bg-gray-100 dark:bg-gray-700 rounded-full mb-3">Agregalar</span>
-            <h3 class="text-xl font-bold mb-2">Yıkanmış Kum</h3>
-            <p class="text-gray-600 dark:text-gray-400 mb-4">Yıkanmış kum, ince işlerde ve beton yapımında kullanılır.</p>
-            <div class="flex justify-between items-center pt-2 border-t border-gray-200 dark:border-gray-700">
-              <span class="text-sm font-medium">Stokta Mevcut</span>
-              <a href="#contact" class="text-construction hover:text-construction-dark font-medium transition-colors duration-300">Sipariş Et</a>
-            </div>
-          </div>
-        </div>
-
-        <!-- More products can be loaded with a button -->
-        <div class="col-span-1 sm:col-span-2 md:col-span-3 lg:col-span-4 flex justify-center mt-8" data-aos="fade-up">
-          <button id="load-more-products" class="px-6 py-3 bg-white dark:bg-gray-800 text-gray-900 dark:text-white border-2 border-construction rounded-lg font-semibold hover:bg-construction hover:text-white transition-all duration-300 shadow-md flex items-center">
-            <span>Daha Fazla Ürün Göster</span>
-            <i class="fas fa-chevron-down ml-2"></i>
-          </button>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Parallax CTA Section -->
-  <section class="parallax" style="background: linear-gradient(45deg, #1a2a6c, #b21f1f, #fdbb2d);">
-    <div class="parallax-overlay py-16">
-      <h2 class="text-3xl md:text-4xl font-bold mb-6" data-aos="fade-up">İnşaat Projelerinizde Yanınızdayız</h2>
-      <p class="text-lg max-w-2xl mx-auto mb-8" data-aos="fade-up" data-aos-delay="100">
-        Yüksek kaliteli malzemeler, uygun fiyatlar ve profesyonel hizmet için hemen bizimle iletişime geçin.
-      </p>
-      <a href="#contact" class="px-8 py-3 bg-white text-gray-900 font-bold rounded-lg hover:bg-gray-100 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1" data-aos="fade-up" data-aos-delay="200">
-        Hemen Teklif Alın
-      </a>
-    </div>
-  </section>
-
-  <!-- Projects Showcase -->
-  <section id="projects" class="py-16 bg-white dark:bg-gray-800">
-    <div class="container mx-auto px-4">
-      <div class="text-center mb-12">
-        <h2 class="text-3xl md:text-4xl font-bold mb-4" data-aos="fade-up">Tamamlanan Projelerimiz</h2>
-        <p class="text-lg text-gray-600 dark:text-gray-400 max-w-3xl mx-auto" data-aos="fade-up" data-aos-delay="100">
-          Başkent İnşaat olarak bugüne kadar tamamladığımız bazı önemli projeleri inceleyebilirsiniz.
-        </p>
-      </div>
-
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        <!-- Project 1 -->
-        <div class="overflow-hidden rounded-lg shadow-lg" data-aos="fade-up">
-          <div class="h-60 bg-gray-300 dark:bg-gray-700 relative overflow-hidden group">
-            <div class="absolute inset-0 bg-gradient-to-b from-transparent to-black opacity-50 group-hover:opacity-70 transition-opacity duration-300"></div>
-            <div style="background: linear-gradient(135deg, #4a69bd, #6a89cc); height: 100%;"></div>
-            <div class="absolute bottom-0 left-0 right-0 p-4 text-white">
-              <h3 class="text-xl font-bold mb-1">Konut Projesi</h3>
-              <p class="text-sm opacity-80">Konya, Meram</p>
-            </div>
-          </div>
-          <div class="p-5 bg-white dark:bg-gray-800">
-            <p class="text-gray-600 dark:text-gray-400 mb-4">Modern 120 dairelik konut projesi. Yüksek kaliteli malzemelerle inşa edilmiş, depreme dayanıklı yapı.</p>
-            <div class="flex flex-wrap gap-2">
-              <span class="px-3 py-1 text-xs font-semibold bg-gray-100 dark:bg-gray-700 rounded-full">Konut</span>
-              <span class="px-3 py-1 text-xs font-semibold bg-gray-100 dark:bg-gray-700 rounded-full">2021</span>
-              <span class="px-3 py-1 text-xs font-semibold bg-gray-100 dark:bg-gray-700 rounded-full">Tamamlandı</span>
-            </div>
-          </div>
-        </div>
-
-        <!-- Project 2 -->
-        <div class="overflow-hidden rounded-lg shadow-lg" data-aos="fade-up" data-aos-delay="100">
-          <div class="h-60 bg-gray-300 dark:bg-gray-700 relative overflow-hidden group">
-            <div class="absolute inset-0 bg-gradient-to-b from-transparent to-black opacity-50 group-hover:opacity-70 transition-opacity duration-300"></div>
-            <div style="background: linear-gradient(135deg, #38ada9, #78e08f); height: 100%;"></div>
-            <div class="absolute bottom-0 left-0 right-0 p-4 text-white">
-              <h3 class="text-xl font-bold mb-1">Ofis Kompleksi</h3>
-              <p class="text-sm opacity-80">İstanbul, Levent</p>
-            </div>
-          </div>
-          <div class="p-5 bg-white dark:bg-gray-800">
-            <p class="text-gray-600 dark:text-gray-400 mb-4">25 katlı modern ofis kompleksi. Akıllı bina teknolojisi ile donatılmış, enerji verimli yapı.</p>
-            <div class="flex flex-wrap gap-2">
-              <span class="px-3 py-1 text-xs font-semibold bg-gray-100 dark:bg-gray-700 rounded-full">Ticari</span>
-              <span class="px-3 py-1 text-xs font-semibold bg-gray-100 dark:bg-gray-700 rounded-full">2022</span>
-              <span class="px-3 py-1 text-xs font-semibold bg-gray-100 dark:bg-gray-700 rounded-full">Tamamlandı</span>
-            </div>
-          </div>
-        </div>
-
-        <!-- Project 3 -->
-        <div class="overflow-hidden rounded-lg shadow-lg" data-aos="fade-up" data-aos-delay="200">
-          <div class="h-60 bg-gray-300 dark:bg-gray-700 relative overflow-hidden group">
-            <div class="absolute inset-0 bg-gradient-to-b from-transparent to-black opacity-50 group-hover:opacity-70 transition-opacity duration-300"></div>
-            <div style="background: linear-gradient(135deg, #e55039, #fa983a); height: 100%;"></div>
-            <div class="absolute bottom-0 left-0 right-0 p-4 text-white">
-              <h3 class="text-xl font-bold mb-1">Villa Projesi</h3>
-              <p class="text-sm opacity-80">Muğla, Bodrum</p>
-            </div>
-          </div>
-          <div class="p-5 bg-white dark:bg-gray-800">
-            <p class="text-gray-600 dark:text-gray-400 mb-4">Lüks villa projesi. Özel tasarım, deniz manzaralı, sürdürülebilir malzemelerle inşa edilmiş yapı.</p>
-            <div class="flex flex-wrap gap-2">
-              <span class="px-3 py-1 text-xs font-semibold bg-gray-100 dark:bg-gray-700 rounded-full">Konut</span>
-              <span class="px-3 py-1 text-xs font-semibold bg-gray-100 dark:bg-gray-700 rounded-full">2023</span>
-              <span class="px-3 py-1 text-xs font-semibold bg-gray-100 dark:bg-gray-700 rounded-full">Tamamlandı</span>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Testimonials Section -->
-  <section id="testimonials" class="py-16 bg-gray-50 dark:bg-gray-900 shape-pattern-2">
-    <div class="container mx-auto px-4">
-      <div class="text-center mb-12">
-        <h2 class="text-3xl md:text-4xl font-bold mb-4" data-aos="fade-up">Müşteri Yorumları</h2>
-        <p class="text-lg text-gray-600 dark:text-gray-400 max-w-3xl mx-auto" data-aos="fade-up" data-aos-delay="100">
-          Müşterilerimizin deneyimleri ve yorumları bizim için çok değerli.
-        </p>
-      </div>
-
-      <div class="testimonial-slider overflow-hidden relative" data-aos="fade-up">
-        <div class="testimonial-track flex transition-transform duration-500 ease-in-out">
-          <!-- Testimonial 1 -->
-          <div class="testimonial-slide w-full md:w-1/2 lg:w-1/3 flex-shrink-0 px-4">
-            <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg h-full">
-              <div class="flex items-center mb-4">
-                <div class="w-12 h-12 bg-construction rounded-full flex items-center justify-center text-white font-bold text-xl">
-                  MA
+        <div class="hero-content" data-aos="fade-up">
+            <div class="content-wrapper">
+                <h1>Hayalinizdeki Bahçeyi Birlikte Yaratıyoruz</h1>
+                <p>42 yıllık deneyimimizle profesyonel peyzaj tasarım hizmetleri sunuyoruz</p>
+                <div class="hero-buttons">
+                    <a href="#iletisim" class="cta-button primary">Ücretsiz Keşif</a>
+                    <a href="#hizmetler" class="cta-button secondary">Hizmetlerimiz</a>
                 </div>
-                <div class="ml-4">
-                  <h4 class="font-bold">Mehmet Aydın</h4>
-                  <div class="text-yellow-400 flex">
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                  </div>
+            </div>
+        </div>
+        <div class="hero-stats">
+            <div class="stat-item" data-aos="fade-up" data-aos-delay="100">
+                <i class="fas fa-trophy"></i>
+                <h3>42+</h3>
+                <p>Yıllık Deneyim</p>
+            </div>
+            <div class="stat-item" data-aos="fade-up" data-aos-delay="200">
+                <i class="fas fa-project-diagram"></i>
+                <h3>1000+</h3>
+                <p>Tamamlanan Proje</p>
+            </div>
+            <div class="stat-item" data-aos="fade-up" data-aos-delay="300">
+                <i class="fas fa-users"></i>
+                <h3>5000+</h3>
+                <p>Mutlu Müşteri</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section id="hizmetler" class="services">
+        <div class="section-header" data-aos="fade-up">
+            <h2>Özel Hizmetlerimiz</h2>
+            <p>Size özel tasarlanmış peyzaj çözümleri sunuyoruz</p>
+        </div>
+        <div class="service-grid">
+            <div class="service-card" data-aos="fade-up">
+                <i class="fas fa-tree"></i>
+                <h3>Lüks Villa Bahçeleri</h3>
+                <p>Özel tasarım havuzlar, şelaleler ve egzotik bitkiler</p>
+            </div>
+            <div class="service-card" data-aos="fade-up" data-aos-delay="100">
+                <i class="fas fa-building"></i>
+                <h3>Kurumsal Peyzaj</h3>
+                <p>Şirket binaları ve iş merkezleri için özel tasarımlar</p>
+            </div>
+            <div class="service-card" data-aos="fade-up" data-aos-delay="200">
+                <i class="fas fa-water"></i>
+                <h3>Akıllı Sulama</h3>
+                <p>Mobil uygulama kontrollü sulama sistemleri</p>
+            </div>
+            <div class="service-card" data-aos="fade-up" data-aos-delay="300">
+                <i class="fas fa-lightbulb"></i>
+                <h3>LED Aydınlatma</h3>
+                <p>Enerji tasarruflu özel tasarım aydınlatma</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Products Section -->
+    <section id="urunler" class="products">
+        <div class="section-header" data-aos="fade-up">
+            <h2>Çiçek Çeşitlerimiz</h2>
+            <p>Özel sera yetiştiriciliği ile üretilen nadir çiçekler</p>
+            <div class="category-filter">
+                <button class="filter-btn active" data-category="all">Tümü</button>
+                <button class="filter-btn" data-category="indoor">İç Mekan</button>
+                <button class="filter-btn" data-category="outdoor">Dış Mekan</button>
+                <button class="filter-btn" data-category="rare">Nadir</button>
+                <button class="filter-btn" data-category="seasonal">Mevsimlik</button>
+            </div>
+        </div>
+        <div class="product-grid">
+            <div class="product-card" data-aos="fade-up" data-category="indoor">
+                <div class="product-image">
+                    <img src="https://images.unsplash.com/photo-1518621736915-f3b1c41bfd00?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Menekşe">
+                    <div class="product-badge">İç Mekan</div>
                 </div>
-              </div>
-              <p class="text-gray-600 dark:text-gray-400 italic">
-                "Başkent İnşaat'tan aldığımız tüm malzemeler son derece kaliteli çıktı. Teslimat zamanında yapıldı ve fiyatlar da çok uygundu. Kesinlikle tavsiye ediyorum."
-              </p>
-            </div>
-          </div>
-
-          <!-- Testimonial 2 -->
-          <div class="testimonial-slide w-full md:w-1/2 lg:w-1/3 flex-shrink-0 px-4">
-            <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg h-full">
-              <div class="flex items-center mb-4">
-                <div class="w-12 h-12 bg-accent rounded-full flex items-center justify-center text-white font-bold text-xl">
-                  AY
+                <div class="product-info">
+                    <h3>Menekşe</h3>
+                    <p>Özel yetiştirilen nadir menekşe türleri ve hibrit çeşitleri</p>
+                    <div class="product-features">
+                        <span><i class="fas fa-sun"></i> Yarı Gölge</span>
+                        <span><i class="fas fa-tint"></i> Orta Su</span>
+                        <span><i class="fas fa-thermometer-half"></i> 18-24°C</span>
+                    </div>
+                    <div class="product-price">
+                        <span class="price">₺75</span>
+                        <span class="unit">/ adet</span>
+                    </div>
+                    <button class="product-button">Detaylı Bilgi</button>
                 </div>
-                <div class="ml-4">
-                  <h4 class="font-bold">Ayşe Yılmaz</h4>
-                  <div class="text-yellow-400 flex">
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star-half-alt"></i>
-                  </div>
+            </div>
+            <div class="product-card" data-aos="fade-up" data-category="outdoor">
+                <div class="product-image">
+                    <img src="https://images.unsplash.com/photo-1518621736915-f3b1c41bfd00?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Lavanta">
+                    <div class="product-badge">Dış Mekan</div>
                 </div>
-              </div>
-              <p class="text-gray-600 dark:text-gray-400 italic">
-                "Ev yenileme projemizde ihtiyacımız olan tüm malzemeleri Başkent İnşaat'tan temin ettik. Çalışanlar çok yardımcı oldu ve doğru ürünleri seçmemizde bize rehberlik ettiler."
-              </p>
-            </div>
-          </div>
-
-          <!-- Testimonial 3 -->
-          <div class="testimonial-slide w-full md:w-1/2 lg:w-1/3 flex-shrink-0 px-4">
-            <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg h-full">
-              <div class="flex items-center mb-4">
-                <div class="w-12 h-12 bg-primary rounded-full flex items-center justify-center text-white font-bold text-xl">
-                  CK
+                <div class="product-info">
+                    <h3>Lavanta</h3>
+                    <p>Özel yetiştirilen nadir lavanta türleri ve hibrit çeşitleri</p>
+                    <div class="product-features">
+                        <span><i class="fas fa-sun"></i> Güneşli</span>
+                        <span><i class="fas fa-tint"></i> Az Su</span>
+                        <span><i class="fas fa-thermometer-half"></i> 15-25°C</span>
+                    </div>
+                    <div class="product-price">
+                        <span class="price">₺120</span>
+                        <span class="unit">/ adet</span>
+                    </div>
+                    <button class="product-button">Detaylı Bilgi</button>
                 </div>
-                <div class="ml-4">
-                  <h4 class="font-bold">Cemil Kara</h4>
-                  <div class="text-yellow-400 flex">
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                  </div>
+            </div>
+            <div class="product-card" data-aos="fade-up" data-category="rare">
+                <div class="product-image">
+                    <img src="https://images.unsplash.com/photo-1518621736915-f3b1c41bfd00?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Anadolu Karanfili">
+                    <div class="product-badge">Nadir</div>
                 </div>
-              </div>
-              <p class="text-gray-600 dark:text-gray-400 italic">
-                "Şirket olarak büyük bir inşaat projemizde Başkent İnşaat ile çalıştık. Profesyonel yaklaşımları, zamanında teslimatları ve ürün kaliteleri ile bizi çok memnun ettiler."
-              </p>
-            </div>
-          </div>
-
-          <!-- Testimonial 4 -->
-          <div class="testimonial-slide w-full md:w-1/2 lg:w-1/3 flex-shrink-0 px-4">
-            <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg h-full">
-              <div class="flex items-center mb-4">
-                <div class="w-12 h-12 bg-construction-dark rounded-full flex items-center justify-center text-white font-bold text-xl">
-                  SÖ
+                <div class="product-info">
+                    <h3>Anadolu Karanfili</h3>
+                    <p>Türkiye'ye özgü endemik karanfil türü, özel sera koşullarında yetiştirilir</p>
+                    <div class="product-features">
+                        <span><i class="fas fa-sun"></i> Güneşli</span>
+                        <span><i class="fas fa-tint"></i> Orta Su</span>
+                        <span><i class="fas fa-thermometer-half"></i> 15-25°C</span>
+                    </div>
+                    <div class="product-price">
+                        <span class="price">₺280</span>
+                        <span class="unit">/ adet</span>
+                    </div>
+                    <button class="product-button">Detaylı Bilgi</button>
                 </div>
-                <div class="ml-4">
-                  <h4 class="font-bold">Selim Öztürk</h4>
-                  <div class="text-yellow-400 flex">
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="far fa-star"></i>
-                  </div>
+            </div>
+            <div class="product-card" data-aos="fade-up" data-category="indoor">
+                <div class="product-image">
+                    <img src="https://images.unsplash.com/photo-1518621736915-f3b1c41bfd00?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Kalanşo">
+                    <div class="product-badge">İç Mekan</div>
                 </div>
-              </div>
-              <p class="text-gray-600 dark:text-gray-400 italic">
-                "Müşteri hizmetleri konusunda gerçekten çok başarılılar. Her soruma hızlı yanıt aldım ve ihtiyacımız olan malzemeler konusunda doğru yönlendirildik."
-              </p>
+                <div class="product-info">
+                    <h3>Kalanşo</h3>
+                    <p>Özel yetiştirilen nadir kalanşo türleri ve hibrit çeşitleri</p>
+                    <div class="product-features">
+                        <span><i class="fas fa-sun"></i> Güneşli</span>
+                        <span><i class="fas fa-tint"></i> Az Su</span>
+                        <span><i class="fas fa-thermometer-half"></i> 15-25°C</span>
+                    </div>
+                    <div class="product-price">
+                        <span class="price">₺85</span>
+                        <span class="unit">/ adet</span>
+                    </div>
+                    <button class="product-button">Detaylı Bilgi</button>
+                </div>
             </div>
-          </div>
-        </div>
-
-        <!-- Testimonial Controls -->
-        <button class="testimonial-prev absolute top-1/2 left-2 transform -translate-y-1/2 w-10 h-10 bg-white dark:bg-gray-800 rounded-full shadow-md flex items-center justify-center z-10 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-300">
-          <i class="fas fa-chevron-left"></i>
-        </button>
-        <button class="testimonial-next absolute top-1/2 right-2 transform -translate-y-1/2 w-10 h-10 bg-white dark:bg-gray-800 rounded-full shadow-md flex items-center justify-center z-10 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-300">
-          <i class="fas fa-chevron-right"></i>
-        </button>
-      </div>
-    </div>
-  </section>
-
-  <!-- About Section -->
-  <section id="about" class="py-16 bg-white dark:bg-gray-800">
-    <div class="container mx-auto px-4">
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
-        <div data-aos="fade-right">
-          <div class="relative">
-            <div class="w-full h-72 md:h-96 rounded-lg shadow-xl overflow-hidden">
-              <div style="background: linear-gradient(135deg, #485563, #29323c); height: 100%;" class="w-full h-full"></div>
+            <div class="product-card" data-aos="fade-up" data-category="outdoor">
+                <div class="product-image">
+                    <img src="https://images.unsplash.com/photo-1518621736915-f3b1c41bfd00?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Sümbül">
+                    <div class="product-badge">Dış Mekan</div>
+                </div>
+                <div class="product-info">
+                    <h3>Sümbül</h3>
+                    <p>Özel yetiştirilen nadir sümbül türleri ve hibrit çeşitleri</p>
+                    <div class="product-features">
+                        <span><i class="fas fa-sun"></i> Güneşli</span>
+                        <span><i class="fas fa-tint"></i> Orta Su</span>
+                        <span><i class="fas fa-thermometer-half"></i> 10-20°C</span>
+                    </div>
+                    <div class="product-price">
+                        <span class="price">₺95</span>
+                        <span class="unit">/ adet</span>
+                    </div>
+                    <button class="product-button">Detaylı Bilgi</button>
+                </div>
             </div>
-            <div class="absolute -bottom-6 -right-6 w-32 h-32 bg-construction rounded-lg flex items-center justify-center text-white font-bold">
-              <div class="text-center">
-                <div class="text-3xl">25+</div>
-                <div class="text-sm uppercase tracking-wider">Yıllık<br>Deneyim</div>
-              </div>
+            <div class="product-card" data-aos="fade-up" data-category="rare">
+                <div class="product-image">
+                    <img src="https://images.unsplash.com/photo-1518621736915-f3b1c41bfd00?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Bonsai">
+                    <div class="product-badge">Nadir</div>
+                </div>
+                <div class="product-info">
+                    <h3>Bonsai</h3>
+                    <p>Özel yetiştirilen nadir bonsai türleri ve hibrit çeşitleri</p>
+                    <div class="product-features">
+                        <span><i class="fas fa-sun"></i> Yarı Gölge</span>
+                        <span><i class="fas fa-tint"></i> Orta Su</span>
+                        <span><i class="fas fa-thermometer-half"></i> 15-25°C</span>
+                    </div>
+                    <div class="product-price">
+                        <span class="price">₺450</span>
+                        <span class="unit">/ adet</span>
+                    </div>
+                    <button class="product-button">Detaylı Bilgi</button>
+                </div>
             </div>
-          </div>
-        </div>
-        <div data-aos="fade-left">
-          <h2 class="text-3xl md:text-4xl font-bold mb-6">Hakkımızda</h2>
-          <p class="text-lg text-gray-700 dark:text-gray-300 mb-5 leading-relaxed">
-            Başkent İnşaat, 1997 yılında Konya'da kurulmuş, Türkiye'nin önde gelen yapı malzemeleri tedarikçilerinden biridir. Yıllara dayanan tecrübemiz ve profesyonel ekibimizle, inşaat sektörüne kaliteli ürünler sunmayı hedefliyoruz.
-          </p>
-          <p class="text-lg text-gray-700 dark:text-gray-300 mb-8 leading-relaxed">
-            Müşteri memnuniyetini ön planda tutarak, her projenizde yanınızda olmayı ve en uygun çözümleri sunmayı ilke edindik. Geniş ürün yelpazemiz ve uygun fiyatlarımızla her bütçeye hitap ediyoruz.
-          </p>
-          <div class="flex flex-col sm:flex-row gap-4">
-            <a href="#contact" class="px-6 py-3 bg-construction text-white font-bold rounded-lg hover:bg-construction-dark transition-all duration-300 shadow-lg flex items-center justify-center">
-              <i class="fas fa-envelope mr-2"></i>
-              İletişime Geç
-            </a>
-            <a href="tel:+905466619657" class="px-6 py-3 bg-white dark:bg-gray-700 text-gray-900 dark:text-white border-2 border-construction rounded-lg font-bold hover:bg-construction hover:text-white transition-all duration-300 shadow-lg flex items-center justify-center">
-              <i class="fas fa-phone-alt mr-2"></i>
-              Hemen Ara
-            </a>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Contact Section -->
-  <section id="contact" class="py-16 bg-gray-50 dark:bg-gray-900">
-    <div class="container mx-auto px-4">
-      <div class="text-center mb-12">
-        <h2 class="text-3xl md:text-4xl font-bold mb-4" data-aos="fade-up">İletişim</h2>
-        <p class="text-lg text-gray-600 dark:text-gray-400 max-w-3xl mx-auto" data-aos="fade-up" data-aos-delay="100">
-          Sorularınız için bizimle iletişime geçebilir, ürünlerimiz hakkında bilgi alabilir veya sipariş verebilirsiniz.
-        </p>
-      </div>
-
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-16">
-        <div class="bg-white dark:bg-gray-800 p-6 md:p-8 rounded-lg shadow-lg" data-aos="fade-right">
-          <h3 class="text-2xl font-bold mb-6">Bize Ulaşın</h3>
-          <form id="contact-form" class="space-y-6">
-            <div>
-              <label for="name" class="block text-sm font-medium mb-2">Adınız</label>
-              <input type="text" id="name" name="name" class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-construction focus:border-construction dark:bg-gray-700 dark:text-white text-base" required placeholder="Adınız ve soyadınız">
+            <div class="product-card" data-aos="fade-up" data-category="seasonal">
+                <div class="product-image">
+                    <img src="https://images.unsplash.com/photo-1518621736915-f3b1c41bfd00?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Lale">
+                    <div class="product-badge">Mevsimlik</div>
+                </div>
+                <div class="product-info">
+                    <h3>Lale</h3>
+                    <p>Özel yetiştirilen nadir lale türleri ve hibrit çeşitleri</p>
+                    <div class="product-features">
+                        <span><i class="fas fa-sun"></i> Güneşli</span>
+                        <span><i class="fas fa-tint"></i> Orta Su</span>
+                        <span><i class="fas fa-thermometer-half"></i> 10-20°C</span>
+                    </div>
+                    <div class="product-price">
+                        <span class="price">₺150</span>
+                        <span class="unit">/ adet</span>
+                    </div>
+                    <button class="product-button">Detaylı Bilgi</button>
+                </div>
             </div>
-            <div>
-              <label for="email" class="block text-sm font-medium mb-2">E-posta</label>
-              <input type="email" id="email" name="email" class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-construction focus:border-construction dark:bg-gray-700 dark:text-white text-base" required placeholder="E-posta adresiniz">
+            <div class="product-card" data-aos="fade-up" data-category="indoor">
+                <div class="product-image">
+                    <img src="https://images.unsplash.com/photo-1518621736915-f3b1c41bfd00?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Begonya">
+                    <div class="product-badge">İç Mekan</div>
+                </div>
+                <div class="product-info">
+                    <h3>Begonya</h3>
+                    <p>Özel yetiştirilen nadir begonya türleri ve hibrit çeşitleri</p>
+                    <div class="product-features">
+                        <span><i class="fas fa-sun"></i> Yarı Gölge</span>
+                        <span><i class="fas fa-tint"></i> Orta Su</span>
+                        <span><i class="fas fa-thermometer-half"></i> 18-24°C</span>
+                    </div>
+                    <div class="product-price">
+                        <span class="price">₺90</span>
+                        <span class="unit">/ adet</span>
+                    </div>
+                    <button class="product-button">Detaylı Bilgi</button>
+                </div>
             </div>
-            <div>
-              <label for="phone" class="block text-sm font-medium mb-2">Telefon</label>
-              <input type="tel" id="phone" name="phone" class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-construction focus:border-construction dark:bg-gray-700 dark:text-white text-base" placeholder="Telefon numaranız">
+            <div class="product-card" data-aos="fade-up" data-category="outdoor">
+                <div class="product-image">
+                    <img src="https://images.unsplash.com/photo-1518621736915-f3b1c41bfd00?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Gül">
+                    <div class="product-badge">Dış Mekan</div>
+                </div>
+                <div class="product-info">
+                    <h3>Gül</h3>
+                    <p>Özel yetiştirilen nadir gül türleri ve hibrit çeşitleri</p>
+                    <div class="product-features">
+                        <span><i class="fas fa-sun"></i> Güneşli</span>
+                        <span><i class="fas fa-tint"></i> Orta Su</span>
+                        <span><i class="fas fa-thermometer-half"></i> 15-25°C</span>
+                    </div>
+                    <div class="product-price">
+                        <span class="price">₺180</span>
+                        <span class="unit">/ adet</span>
+                    </div>
+                    <button class="product-button">Detaylı Bilgi</button>
+                </div>
             </div>
-            <div>
-              <label for="message" class="block text-sm font-medium mb-2">Mesajınız</label>
-              <textarea id="message" name="message" rows="5" class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-construction focus:border-construction dark:bg-gray-700 dark:text-white text-base" required placeholder="Mesajınızı buraya yazabilirsiniz"></textarea>
+            <div class="product-card" data-aos="fade-up" data-category="seasonal">
+                <div class="product-image">
+                    <img src="https://images.unsplash.com/photo-1518621736915-f3b1c41bfd00?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Papatya">
+                    <div class="product-badge">Mevsimlik</div>
+                </div>
+                <div class="product-info">
+                    <h3>Papatya</h3>
+                    <p>Özel yetiştirilen nadir papatya türleri ve hibrit çeşitleri</p>
+                    <div class="product-features">
+                        <span><i class="fas fa-sun"></i> Güneşli</span>
+                        <span><i class="fas fa-tint"></i> Az Su</span>
+                        <span><i class="fas fa-thermometer-half"></i> 15-25°C</span>
+                    </div>
+                    <div class="product-price">
+                        <span class="price">₺80</span>
+                        <span class="unit">/ adet</span>
+                    </div>
+                    <button class="product-button">Detaylı Bilgi</button>
+                </div>
             </div>
-            <div>
-              <button type="submit" class="w-full px-6 py-3 bg-construction text-white font-bold rounded-lg hover:bg-construction-dark transition-all duration-300 shadow-lg flex items-center justify-center">
-                <span>Gönder</span>
-                <i class="fas fa-paper-plane ml-2"></i>
-              </button>
+            <div class="product-card" data-aos="fade-up" data-category="indoor">
+                <div class="product-image">
+                    <img src="https://images.unsplash.com/photo-1518621736915-f3b1c41bfd00?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Kaktüs">
+                    <div class="product-badge">İç Mekan</div>
+                </div>
+                <div class="product-info">
+                    <h3>Kaktüs</h3>
+                    <p>Özel yetiştirilen nadir kaktüs türleri ve sukulentler</p>
+                    <div class="product-features">
+                        <span><i class="fas fa-sun"></i> Güneşli</span>
+                        <span><i class="fas fa-tint"></i> Az Su</span>
+                        <span><i class="fas fa-thermometer-half"></i> 20-30°C</span>
+                    </div>
+                    <div class="product-price">
+                        <span class="price">₺120</span>
+                        <span class="unit">/ adet</span>
+                    </div>
+                    <button class="product-button">Detaylı Bilgi</button>
+                </div>
             </div>
-          </form>
+            <div class="product-card" data-aos="fade-up" data-category="rare">
+                <div class="product-image">
+                    <img src="https://images.unsplash.com/photo-1518621736915-f3b1c41bfd00?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Zambak">
+                    <div class="product-badge">Nadir</div>
+                </div>
+                <div class="product-info">
+                    <h3>Zambak</h3>
+                    <p>Özel yetiştirilen nadir zambak türleri ve hibrit çeşitleri</p>
+                    <div class="product-features">
+                        <span><i class="fas fa-sun"></i> Güneşli</span>
+                        <span><i class="fas fa-tint"></i> Orta Su</span>
+                        <span><i class="fas fa-thermometer-half"></i> 15-25°C</span>
+                    </div>
+                    <div class="product-price">
+                        <span class="price">₺200</span>
+                        <span class="unit">/ adet</span>
+                    </div>
+                    <button class="product-button">Detaylı Bilgi</button>
+                </div>
+            </div>
+            <div class="product-card" data-aos="fade-up" data-category="indoor">
+                <div class="product-image">
+                    <img src="https://images.unsplash.com/photo-1518621736915-f3b1c41bfd00?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Antoryum">
+                    <div class="product-badge">İç Mekan</div>
+                </div>
+                <div class="product-info">
+                    <h3>Antoryum</h3>
+                    <p>Özel yetiştirilen nadir antoryum türleri ve hibrit çeşitleri</p>
+                    <div class="product-features">
+                        <span><i class="fas fa-sun"></i> Yarı Gölge</span>
+                        <span><i class="fas fa-tint"></i> Orta Su</span>
+                        <span><i class="fas fa-thermometer-half"></i> 18-24°C</span>
+                    </div>
+                    <div class="product-price">
+                        <span class="price">₺280</span>
+                        <span class="unit">/ adet</span>
+                    </div>
+                    <button class="product-button">Detaylı Bilgi</button>
+                </div>
+            </div>
+            <div class="product-card" data-aos="fade-up" data-category="outdoor">
+                <div class="product-image">
+                    <img src="https://images.unsplash.com/photo-1518621736915-f3b1c41bfd00?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Sardunya">
+                    <div class="product-badge">Dış Mekan</div>
+                </div>
+                <div class="product-info">
+                    <h3>Sardunya</h3>
+                    <p>Özel yetiştirilen nadir sardunya türleri ve hibrit çeşitleri</p>
+                    <div class="product-features">
+                        <span><i class="fas fa-sun"></i> Güneşli</span>
+                        <span><i class="fas fa-tint"></i> Orta Su</span>
+                        <span><i class="fas fa-thermometer-half"></i> 15-25°C</span>
+                    </div>
+                    <div class="product-price">
+                        <span class="price">₺100</span>
+                        <span class="unit">/ adet</span>
+                    </div>
+                    <button class="product-button">Detaylı Bilgi</button>
+                </div>
+            </div>
+            <div class="product-card" data-aos="fade-up" data-category="rare">
+                <div class="product-image">
+                    <img src="https://images.unsplash.com/photo-1518621736915-f3b1c41bfd00?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Kapadokya Gülü">
+                    <div class="product-badge">Nadir</div>
+                </div>
+                <div class="product-info">
+                    <h3>Kapadokya Gülü</h3>
+                    <p>Kapadokya bölgesine özgü endemik gül türü, volkanik toprakta yetişir</p>
+                    <div class="product-features">
+                        <span><i class="fas fa-sun"></i> Güneşli</span>
+                        <span><i class="fas fa-tint"></i> Az Su</span>
+                        <span><i class="fas fa-thermometer-half"></i> 15-30°C</span>
+                    </div>
+                    <div class="product-price">
+                        <span class="price">₺320</span>
+                        <span class="unit">/ adet</span>
+                    </div>
+                    <button class="product-button">Detaylı Bilgi</button>
+                </div>
+            </div>
+            <div class="product-card" data-aos="fade-up" data-category="rare">
+                <div class="product-image">
+                    <img src="https://images.unsplash.com/photo-1518621736915-f3b1c41bfd00?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Türk Lalesi">
+                    <div class="product-badge">Nadir</div>
+                </div>
+                <div class="product-info">
+                    <h3>Türk Lalesi</h3>
+                    <p>Osmanlı döneminden gelen özel lale türü, el yapımı çömleklerde yetiştirilir</p>
+                    <div class="product-features">
+                        <span><i class="fas fa-sun"></i> Yarı Gölge</span>
+                        <span><i class="fas fa-tint"></i> Orta Su</span>
+                        <span><i class="fas fa-thermometer-half"></i> 10-20°C</span>
+                    </div>
+                    <div class="product-price">
+                        <span class="price">₺450</span>
+                        <span class="unit">/ adet</span>
+                    </div>
+                    <button class="product-button">Detaylı Bilgi</button>
+                </div>
+            </div>
+            <div class="product-card" data-aos="fade-up" data-category="rare">
+                <div class="product-image">
+                    <img src="https://images.unsplash.com/photo-1518621736915-f3b1c41bfd00?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Anadolu Sümbülü">
+                    <div class="product-badge">Nadir</div>
+                </div>
+                <div class="product-info">
+                    <h3>Anadolu Sümbülü</h3>
+                    <p>Türkiye'ye özgü endemik sümbül türü, özel bakım gerektirir</p>
+                    <div class="product-features">
+                        <span><i class="fas fa-sun"></i> Güneşli</span>
+                        <span><i class="fas fa-tint"></i> Orta Su</span>
+                        <span><i class="fas fa-thermometer-half"></i> 12-22°C</span>
+                    </div>
+                    <div class="product-price">
+                        <span class="price">₺380</span>
+                        <span class="unit">/ adet</span>
+                    </div>
+                    <button class="product-button">Detaylı Bilgi</button>
+                </div>
+            </div>
+            <div class="product-card" data-aos="fade-up" data-category="rare">
+                <div class="product-image">
+                    <img src="https://images.unsplash.com/photo-1518621736915-f3b1c41bfd00?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Ege Orkidesi">
+                    <div class="product-badge">Nadir</div>
+                </div>
+                <div class="product-info">
+                    <h3>Ege Orkidesi</h3>
+                    <p>Ege bölgesine özgü endemik orkide türü, özel sera koşullarında yetiştirilir</p>
+                    <div class="product-features">
+                        <span><i class="fas fa-sun"></i> Yarı Gölge</span>
+                        <span><i class="fas fa-tint"></i> Orta Su</span>
+                        <span><i class="fas fa-thermometer-half"></i> 18-26°C</span>
+                    </div>
+                    <div class="product-price">
+                        <span class="price">₺550</span>
+                        <span class="unit">/ adet</span>
+                    </div>
+                    <button class="product-button">Detaylı Bilgi</button>
+                </div>
+            </div>
+            <div class="product-card" data-aos="fade-up" data-category="rare">
+                <div class="product-image">
+                    <img src="https://images.unsplash.com/photo-1518621736915-f3b1c41bfd00?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Karadeniz Menekşesi">
+                    <div class="product-badge">Nadir</div>
+                </div>
+                <div class="product-info">
+                    <h3>Karadeniz Menekşesi</h3>
+                    <p>Karadeniz bölgesine özgü endemik menekşe türü, nemli ortamda yetişir</p>
+                    <div class="product-features">
+                        <span><i class="fas fa-sun"></i> Gölge</span>
+                        <span><i class="fas fa-tint"></i> Çok Su</span>
+                        <span><i class="fas fa-thermometer-half"></i> 15-23°C</span>
+                    </div>
+                    <div class="product-price">
+                        <span class="price">₺420</span>
+                        <span class="unit">/ adet</span>
+                    </div>
+                    <button class="product-button">Detaylı Bilgi</button>
+                </div>
+            </div>
         </div>
+    </section>
 
-        <div class="bg-white dark:bg-gray-800 p-6 md:p-8 rounded-lg shadow-lg flex flex-col justify-between" data-aos="fade-left">
-  <div>
-    <h3 class="text-2xl font-bold mb-6">İletişim Bilgileri</h3>
-    <div class="space-y-5">
-      <div class="flex items-start">
-        <div class="flex-shrink-0 w-10 h-10 rounded-full bg-construction flex items-center justify-center text-white">
-          <i class="fas fa-map-marker-alt"></i>
+    <!-- About Section -->
+    <section id="hakkimizda" class="about">
+        <div class="about-content" data-aos="fade-right">
+            <h2>Hakkımızda</h2>
+            <p>1982 yılından bu yana Türkiye'nin önde gelen peyzaj tasarım şirketlerinden biri olarak hizmet veriyoruz. Uzman ekibimiz ve yenilikçi yaklaşımımızla her projeyi özel kılıyoruz.</p>
+            <div class="about-features">
+                <div class="feature">
+                    <i class="fas fa-check-circle"></i>
+                    <span>Profesyonel Ekip</span>
+                </div>
+                <div class="feature">
+                    <i class="fas fa-check-circle"></i>
+                    <span>Modern Teknoloji</span>
+                </div>
+                <div class="feature">
+                    <i class="fas fa-check-circle"></i>
+                    <span>Kaliteli Malzeme</span>
+                </div>
+                <div class="feature">
+                    <i class="fas fa-check-circle"></i>
+                    <span>7/24 Destek</span>
+                </div>
+            </div>
         </div>
-        <div class="ml-4">
-          <h4 class="font-bold">Adres</h4>
-          <p class="text-gray-600 dark:text-gray-400">
-            Bahçeşehir, Hasanköy Cd. No:231, 42010 Meram/Konya
-          </p>
+        <div class="about-image" data-aos="fade-left">
+            <div class="image-container">
+                <img src="https://images.unsplash.com/photo-1585320806297-9794b3e4eeae?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80" alt="Peyzaj Tasarım">
+                <div class="image-overlay"></div>
+            </div>
         </div>
-      </div>
-      <div class="flex items-start">
-        <div class="flex-shrink-0 w-10 h-10 rounded-full bg-construction flex items-center justify-center text-white">
-          <i class="fas fa-phone-alt"></i>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="iletisim" class="contact">
+        <div class="section-header" data-aos="fade-up">
+            <h2>İletişim</h2>
+            <p>Projeniz için bizimle iletişime geçin</p>
         </div>
-        <div class="ml-4">
-          <h4 class="font-bold">Telefon</h4>
-          <p class="text-gray-600 dark:text-gray-400">
-            <a href="tel:+905466619657" class="hover:text-construction transition-colors duration-300">+90 546 661 9657</a>
-          </p>
+        <div class="contact-container">
+            <form class="contact-form" data-aos="fade-right">
+                <div class="form-group">
+                    <input type="text" placeholder="Adınız" required>
+                </div>
+                <div class="form-group">
+                    <input type="email" placeholder="E-posta Adresiniz" required>
+                </div>
+                <div class="form-group">
+                    <input type="tel" placeholder="Telefon Numaranız" required>
+                </div>
+                <div class="form-group">
+                    <select required>
+                        <option value="">Hizmet Seçiniz</option>
+                        <option value="villa">Villa Bahçesi</option>
+                        <option value="teras">Teras Bahçesi</option>
+                        <option value="kurumsal">Kurumsal Peyzaj</option>
+                        <option value="bakim">Bakım Hizmeti</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <textarea placeholder="Projeniz hakkında bilgi veriniz" required></textarea>
+                </div>
+                <button type="submit" class="submit-button">Gönder</button>
+            </form>
+            <div class="contact-info" data-aos="fade-left">
+                <div class="info-card">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <h3>Adres</h3>
+                    <p>Levent, İstanbul</p>
+                </div>
+                <div class="info-card">
+                    <i class="fas fa-phone"></i>
+                    <h3>Telefon</h3>
+                    <p>+90 212 123 45 67</p>
+                </div>
+                <div class="info-card">
+                    <i class="fas fa-envelope"></i>
+                    <h3>E-posta</h3>
+                    <p>info@peyzaj42.com</p>
+                </div>
+                <div class="info-card">
+                    <i class="fas fa-clock"></i>
+                    <h3>Çalışma Saatleri</h3>
+                    <p>Pazartesi - Cumartesi: 09:00 - 18:00</p>
+                </div>
+            </div>
         </div>
-      </div>
-      <div class="flex items-start">
-        <div class="flex-shrink-0 w-10 h-10 rounded-full bg-construction flex items-center justify-center text-white">
-          <i class="fas fa-clock"></i>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>Peyzaj 42</h3>
+                <p>Türkiye'nin önde gelen peyzaj tasarım şirketi</p>
+                <div class="social-links">
+                    <a href="#"><i class="fab fa-facebook"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-linkedin"></i></a>
+                </div>
+            </div>
+            <div class="footer-section">
+                <h3>Hızlı Bağlantılar</h3>
+                <ul>
+                    <li><a href="#anasayfa">Ana Sayfa</a></li>
+                    <li><a href="#hizmetler">Hizmetler</a></li>
+                    <li><a href="#urunler">Ürünler</a></li>
+                    <li><a href="#hakkimizda">Hakkımızda</a></li>
+                    <li><a href="#iletisim">İletişim</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>İletişim</h3>
+                <p><i class="fas fa-map-marker-alt"></i> Levent, İstanbul</p>
+                <p><i class="fas fa-phone"></i> +90 212 123 45 67</p>
+                <p><i class="fas fa-envelope"></i> info@peyzaj42.com</p>
+            </div>
         </div>
-        <div class="ml-4">
-          <h4 class="font-bold">Çalışma Saatleri</h4>
-          <p class="text-gray-600 dark:text-gray-400">
-             HER GÜN AÇIKTIR
-          </p>
+        <div class="footer-bottom">
+            <p>&copy; 2024 Peyzaj 42. Tüm hakları saklıdır.</p>
         </div>
-      </div>
-      <div class="flex items-start">
-        <div class="flex-shrink-0 w-10 h-10 rounded-full bg-construction flex items-center justify-center text-white">
-          <i class="fas fa-envelope"></i>
-        </div>
-        <div class="ml-4">
-          <h4 class="font-bold">E-posta</h4>
-          <p class="text-gray-600 dark:text-gray-400">
-            <a href="mailto:info@hbaskent.com" class="hover:text-construction transition-colors duration-300">info@hbaskent.com</a>
-          </p>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="mt-8 pt-6 border-t border-gray-200 dark:border-gray-700">
-    <h4 class="font-bold mb-4">Sosyal Medya</h4>
-    <div class="flex space-x-4">
-      <a href="https://www.facebook.com/profile.php?id=100094291542559" target="_blank" rel="noopener noreferrer" class="w-10 h-10 rounded-full bg-construction flex items-center justify-center text-white hover:bg-construction-dark transition-colors duration-300">
-        <i class="fab fa-facebook-f"></i>
-      </a>
-      <a href="https://www.instagram.com/hbaskentinsaat/" target="_blank" rel="noopener noreferrer" class="w-10 h-10 rounded-full bg-construction flex items-center justify-center text-white hover:bg-construction-dark transition-colors duration-300">
-        <i class="fab fa-instagram"></i>
-      </a>
-      <a href="https://wa.me/905466619657" target="_blank" rel="noopener noreferrer" class="w-10 h-10 rounded-full bg-construction flex items-center justify-center text-white hover:bg-construction-dark transition-colors duration-300">
-        <i class="fab fa-whatsapp"></i>
-      </a>
-    </div>
-  </div>
-        </div>
-      </div>
-    </div>
-  </section>
+    </footer>
 
-  <!-- Footer -->
-  <footer class="bg-gray-900 text-white pt-16 pb-8">
-    <div class="container mx-auto px-4">
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
-        <div>
-          <h3 class="text-xl font-bold mb-4">Başkent İnşaat</h3>
-          <p class="text-gray-400 mb-4">
-            Kalite ve güvenin adresi olarak 25 yılı aşkın süredir hizmetinizdeyiz.
-          </p>
-          <div class="flex space-x-4">
-            <a href="#" class="text-gray-400 hover:text-white transition-colors duration-300">
-              <i class="fab fa-facebook-f mr-2"></i>Facebook
-            </a>
-            <a href="#" class="text-gray-400 hover:text-white transition-colors duration-300">
-              <i class="fab fa-instagram mr-2"></i>Instagram
-            </a>
-            <a href="#" class="text-gray-400 hover:text-white transition-colors duration-300">
-              <i class="fab fa-twitter mr-2"></i>Twitter
-            </a>
-            <a href="#" class="text-gray-400 hover:text-white transition-colors duration-300">
-              <i class="fab fa-linkedin-in mr-2"></i>LinkedIn
-            </a>
-          </div>
-        </div>
-        <div>
-          <h3 class="text-xl font-bold mb-4">Hızlı Bağlantılar</h3>
-          <ul class="space-y-3">
-            <li><a href="#home" class="text-gray-400 hover:text-white transition-colors duration-300">Ana Sayfa</a></li>
-            <li><a href="#products" class="text-gray-400 hover:text-white transition-colors duration-300">Ürünler</a></li>
-            <li><a href="#projects" class="text-gray-400 hover:text-white transition-colors duration-300">Projeler</a></li>
-            <li><a href="#testimonials" class="text-gray-400 hover:text-white transition-colors duration-300">Referanslar</a></li>
-            <li><a href="#about" class="text-gray-400 hover:text-white transition-colors duration-300">Hakkında</a></li>
-            <li><a href="#contact" class="text-gray-400 hover:text-white transition-colors duration-300">İletişim</a></li>
-          </ul>
-        </div>
-        <div>
-          <h3 class="text-xl font-bold mb-4">Ürünlerimiz</h3>
-          <ul class="space-y-3">
-            <li><a href="#products" class="text-gray-400 hover:text-white transition-colors duration-300">Beton Pirket</a></li>
-            <li><a href="#products" class="text-gray-400 hover:text-white transition-colors duration-300">Bims Pirket</a></li>
-            <li><a href="#products" class="text-gray-400 hover:text-white transition-colors duration-300">Sıva Alçısı</a></li>
-            <li><a href="#products" class="text-gray-400 hover:text-white transition-colors duration-300">Kiremit</a></li>
-            <li><a href="#products" class="text-gray-400 hover:text-white transition-colors duration-300">Tuğla</a></li>
-            <li><a href="#products" class="text-gray-400 hover:text-white transition-colors duration-300">Tüm Ürünler</a></li>
-          </ul>
-        </div>
-        <div>
-          <h3 class="text-xl font-bold mb-4">İletişim</h3>
-          <ul class="space-y-3">
-            <li class="flex items-start">
-              <i class="fas fa-map-marker-alt mt-1 mr-3 text-construction"></i>
-              <span class="text-gray-400">Bahçeşehir, Hasanköy Cd. No:231, 42010 Meram/Konya</span>
-            </li>
-            <li class="flex items-start">
-              <i class="fas fa-phone-alt mt-1 mr-3 text-construction"></i>
-              <a href="tel:+905466619657" class="text-gray-400 hover:text-white transition-colors duration-300">+90 546 661 9657</a>
-            </li>
-            <li class="flex items-start">
-              <i class="fas fa-envelope mt-1 mr-3 text-construction"></i>
-              <a href="mailto:info@hbaskent.com" class="text-gray-400 hover:text-white transition-colors duration-300">info@hbaskent.com</a>
-            </li>
-          </ul>
-        </div>
-      </div>
-      
-      <div class="pt-8 border-t border-gray-800 text-center text-gray-400 text-sm">
-        <p>© 2025 Başkent İnşaat. Tüm hakları saklıdır.</p>
-      </div>
-    </div>
-  </footer>
-
-  <!-- WhatsApp Button -->
-  <a href="https://wa.me/905466619657" class="fixed bottom-6 right-6 w-14 h-14 bg-green-500 text-white rounded-full flex items-center justify-center shadow-lg hover:bg-green-600 transition-all duration-300 z-50" target="_blank">
-    <i class="fab fa-whatsapp text-2xl"></i>
-  </a>
-
-  <!-- Scroll to top button -->
-  <div id="scroll-top" class="scroll-top">
-    <i class="fas fa-arrow-up"></i>
-  </div>
-
-  <!-- Load AOS library -->
-  <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
-  
-  <script>
-    // Initialize AOS animations
-    document.addEventListener('DOMContentLoaded', function() {
-      // Initialize AOS
-      AOS.init({
-        duration: 800,
-        easing: 'ease-in-out',
-        once: true
-      });
-
-      // Remove preloader when page is loaded
-      setTimeout(() => {
-        document.querySelector('.preloader').classList.add('fade');
-      }, 1000);
-
-      // Check for dark mode preference
-      if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-        document.documentElement.classList.add('dark');
-      }
-
-      // Listen for dark mode changes
-      window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', event => {
-        if (event.matches) {
-          document.documentElement.classList.add('dark');
-        } else {
-          document.documentElement.classList.remove('dark');
-        }
-      });
-
-      // Slider functionality
-      const sliderImages = document.querySelectorAll(".slider-image");
-      const sliderDots = document.querySelectorAll(".slider-dot");
-      let currentImageIndex = 0;
-      let sliderInterval;
-
-      function showImage(index) {
-        // Hide all images
-        sliderImages.forEach(img => img.classList.remove("active"));
-        sliderDots.forEach(dot => dot.classList.remove("active"));
-
-        // Show selected image and dot
-        sliderImages[index].classList.add("active");
-        sliderDots[index].classList.add("active");
-        currentImageIndex = index;
-      }
-
-      function showNextImage() {
-        let nextIndex = (currentImageIndex + 1) % sliderImages.length;
-        showImage(nextIndex);
-      }
-
-      function startSliderInterval() {
-        sliderInterval = setInterval(showNextImage, 6000);
-      }
-
-      // Click event for slider dots
-      sliderDots.forEach(dot => {
-        dot.addEventListener('click', function() {
-          clearInterval(sliderInterval);
-          showImage(parseInt(this.getAttribute('data-index')));
-          startSliderInterval();
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+    <script>
+        AOS.init({
+            duration: 1000,
+            once: true
         });
-      });
 
-      // Start the slider
-      startSliderInterval();
-
-      // Mobile Menu functionality
-      const mobileMenuBtn = document.getElementById('mobile-menu-btn');
-      const mobileNav = document.getElementById('mobile-nav');
-      const mobileNavOverlay = document.getElementById('mobile-nav-overlay');
-      const mobileNavClose = document.getElementById('mobile-nav-close');
-      const mobileNavLinks = document.querySelectorAll('.mobile-nav-link');
-
-      function openMobileNav() {
-        mobileNav.classList.add('active');
-        mobileNavOverlay.classList.add('active');
-        document.body.style.overflow = 'hidden';
-      }
-
-      function closeMobileNav() {
-        mobileNav.classList.remove('active');
-        mobileNavOverlay.classList.remove('active');
-        document.body.style.overflow = '';
-      }
-
-      mobileMenuBtn.addEventListener('click', openMobileNav);
-      mobileNavClose.addEventListener('click', closeMobileNav);
-      mobileNavOverlay.addEventListener('click', closeMobileNav);
-
-      mobileNavLinks.forEach(link => {
-        link.addEventListener('click', closeMobileNav);
-      });
-
-      // Theme toggle
-      const themeToggle = document.getElementById('theme-toggle');
-      themeToggle.addEventListener('click', () => {
-        document.documentElement.classList.toggle('dark');
-      });
-
-      // Product filtering
-      const filterBtns = document.querySelectorAll('.filter-btn');
-      const productCards = document.querySelectorAll('.product-card');
-
-      filterBtns.forEach(btn => {
-        btn.addEventListener('click', () => {
-          // Remove active from all buttons
-          filterBtns.forEach(b => b.classList.remove('active', 'bg-construction', 'text-white'));
-          
-          // Add active to clicked button
-          btn.classList.add('active', 'bg-construction', 'text-white');
-          
-          const filter = btn.getAttribute('data-filter');
-          
-          productCards.forEach(card => {
-            if (filter === 'all' || card.getAttribute('data-category') === filter) {
-              card.style.display = 'block';
-            } else {
-              card.style.display = 'none';
-            }
-          });
+        // Smooth scrolling
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
         });
-      });
 
-      // Load more products button (just for demonstration)
-      const loadMoreBtn = document.getElementById('load-more-products');
-      if (loadMoreBtn) {
-        loadMoreBtn.addEventListener('click', function() {
-          this.innerHTML = `<span>Tüm ürünler yüklendi</span>`;
-          this.disabled = true;
-          setTimeout(() => {
-            this.classList.add('opacity-50', 'cursor-not-allowed');
-          }, 1000);
+        // Mobile menu toggle
+        const menuToggle = document.querySelector('.menu-toggle');
+        const navLinks = document.querySelector('.nav-links');
+
+        menuToggle.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+            menuToggle.classList.toggle('active');
         });
-      }
 
-      // Testimonial slider
-      const testimonialTrack = document.querySelector('.testimonial-track');
-      const testimonialSlides = document.querySelectorAll('.testimonial-slide');
-      const testimonialNextBtn = document.querySelector('.testimonial-next');
-      const testimonialPrevBtn = document.querySelector('.testimonial-prev');
-      let slideWidth;
-      let currentSlide = 0;
-      let slidesPerView = 1;
-
-      function updateSlidesPerView() {
-        if (window.innerWidth >= 1024) {
-          slidesPerView = 3;
-        } else if (window.innerWidth >= 768) {
-          slidesPerView = 2;
-        } else {
-          slidesPerView = 1;
-        }
-        updateTestimonialSlider();
-      }
-
-      function updateTestimonialSlider() {
-        slideWidth = document.querySelector('.testimonial-slide').offsetWidth;
-        testimonialTrack.style.transform = `translateX(-${currentSlide * slideWidth}px)`;
-      }
-
-      function nextTestimonial() {
-        if (currentSlide < testimonialSlides.length - slidesPerView) {
-          currentSlide++;
-          updateTestimonialSlider();
-        }
-      }
-
-      function prevTestimonial() {
-        if (currentSlide > 0) {
-          currentSlide--;
-          updateTestimonialSlider();
-        }
-      }
-
-      testimonialNextBtn.addEventListener('click', nextTestimonial);
-      testimonialPrevBtn.addEventListener('click', prevTestimonial);
-
-      // Update on resize
-      window.addEventListener('resize', updateSlidesPerView);
-      updateSlidesPerView();
-
-      // Stats counter animation
-      const counters = document.querySelectorAll('.counter');
-      const speed = 200; // The lower the faster
-
-      function animateCounters() {
-        counters.forEach(counter => {
-          const target = +counter.getAttribute('data-target');
-          const count = +counter.innerText;
-          const increment = target / speed;
-
-          if (count < target) {
-            counter.innerText = Math.ceil(count + increment);
-            setTimeout(animateCounters, 40);
-          } else {
-            counter.innerText = target;
-          }
+        // Nav link active state
+        const navItems = document.querySelectorAll('.nav-links a');
+        navItems.forEach(item => {
+            item.addEventListener('click', () => {
+                navItems.forEach(i => i.classList.remove('active'));
+                item.classList.add('active');
+            });
         });
-      }
 
-      // Start counting when in viewport
-      const observerOptions = {
-        threshold: 0.5
-      };
+        // Product filtering
+        const filterButtons = document.querySelectorAll('.filter-btn');
+        const productCards = document.querySelectorAll('.product-card');
 
-      const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting) {
-            animateCounters();
-            observer.unobserve(entry.target);
-          }
+        // Show all products initially
+        productCards.forEach(card => {
+            card.classList.add('show');
         });
-      }, observerOptions);
 
-      if (counters.length > 0) {
-        observer.observe(counters[0].parentElement.parentElement.parentElement);
-      }
+        filterButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                // Remove active class from all buttons
+                filterButtons.forEach(btn => btn.classList.remove('active'));
+                // Add active class to clicked button
+                button.classList.add('active');
 
-      // Smooth scrolling for navigation links
-      document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener('click', function (e) {
-          e.preventDefault();
-          const targetId = this.getAttribute('href');
-          if (targetId !== '#') {
-            const target = document.querySelector(targetId);
-            if (target) {
-              window.scrollTo({
-                top: target.offsetTop - 80,
-                behavior: 'smooth'
-              });
-            }
-          }
+                const category = button.getAttribute('data-category');
+
+                productCards.forEach(card => {
+                    if (category === 'all') {
+                        card.classList.add('show');
+                    } else {
+                        if (card.getAttribute('data-category') === category) {
+                            card.classList.add('show');
+                        } else {
+                            card.classList.remove('show');
+                        }
+                    }
+                });
+            });
         });
-      });
 
-      // Scroll to top button
-      const scrollTopBtn = document.getElementById('scroll-top');
-      
-      window.addEventListener('scroll', () => {
-        if (window.pageYOffset > 300) {
-          scrollTopBtn.classList.add('active');
-        } else {
-          scrollTopBtn.classList.remove('active');
-        }
+        // Add animation to product cards
+        const observerOptions = {
+            threshold: 0.1
+        };
 
-        // Add shadow to navbar on scroll
-        const navbar = document.getElementById('navbar');
-        if (window.pageYOffset > 50) {
-          navbar.classList.add('py-2', 'shadow-lg');
-          navbar.classList.remove('py-3', 'shadow-md');
-        } else {
-          navbar.classList.add('py-3', 'shadow-md');
-          navbar.classList.remove('py-2', 'shadow-lg');
-        }
-      });
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
 
-      scrollTopBtn.addEventListener('click', () => {
-        window.scrollTo({
-          top: 0,
-          behavior: 'smooth'
+        productCards.forEach(card => {
+            observer.observe(card);
         });
-      });
-
-      // Contact form submission
-      const contactForm = document.getElementById('contact-form');
-      if (contactForm) {
-        contactForm.addEventListener('submit', function(e) {
-          e.preventDefault();
-          
-          // Simple validation
-          const name = document.getElementById('name').value;
-          const email = document.getElementById('email').value;
-          const message = document.getElementById('message').value;
-          
-          if (!name || !email || !message) {
-            alert('Lütfen tüm zorunlu alanları doldurun.');
-            return;
-          }
-          
-          // Simulate form submission
-          const submitBtn = this.querySelector('button[type="submit"]');
-          const originalBtnText = submitBtn.innerHTML;
-          
-          submitBtn.disabled = true;
-          submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> Gönderiliyor...';
-          
-          setTimeout(() => {
-            submitBtn.innerHTML = '<i class="fas fa-check mr-2"></i> Gönderildi!';
-            submitBtn.classList.add('bg-green-600');
-            submitBtn.classList.remove('hover:bg-construction-dark');
-            
-            // Reset form
-            contactForm.reset();
-            
-            // Reset button after some time
-            setTimeout(() => {
-              submitBtn.disabled = false;
-              submitBtn.innerHTML = originalBtnText;
-              submitBtn.classList.remove('bg-green-600');
-              submitBtn.classList.add('hover:bg-construction-dark');
-            }, 3000);
-          }, 2000);
-        });
-      }
-    });
-  </script>
+    </script>
 </body>
 </html>
